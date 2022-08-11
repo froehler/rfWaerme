@@ -1,0 +1,197 @@
+' Gambas class file
+
+Public Sub Form_open()
+  ficAbnehmerdatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficAbnehmerdatei.Filter = ["*.shp;*.SHP;*.mif;*.MIF", "shape/mapinfo Datei"]
+  ficAbnehmerdatei.FilterIndex = 0
+End
+
+
+Public Sub Lese_tbvAbnehmer()
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim strDatensatzAbnehmerMIFtemp As New String[Global.conMaxDatensaetze * 3 + 13]
+Dim intZeilenAbnehmerMIFtemp, intSpaltenAbnehmer As Integer
+Dim b, i, z As Integer
+
+
+'--------------------DATEN EINLESEN---------------------------------  
+  hsDatei = Open Global.strPfadAbnehmerdatei For Input 'öffnen der eigne Netztrassendatei
+  
+  b = 0
+  hsDatei = Open Global.strPfadAbnehmerdatei For Input 'öffnen der Datei NetzTrasse.MIF
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strDatensatzAbnehmerMIFtemp[b] = Replace$(strZeile, "\r", "")
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  intZeilenAbnehmerMIFtemp = b
+  Close #hsDatei  'schließe Datei NetzTrasse.MIF
+'--------------------DATEN EINLESEN ENDE---------------------------------
+
+  z = 0
+  For i = 0 To intZeilenAbnehmerMIFtemp - 1
+    If Left$(strDatensatzAbnehmerMIFtemp[i], 7) = "Columns" Then
+      intSpaltenAbnehmer = CInt(Right$(strDatensatzAbnehmerMIFtemp[i], -7))
+    Endif
+  Next
+
+
+  tbvAbnehmer.Columns.count = 2
+  tbvAbnehmer.Rows.count = intSpaltenAbnehmer
+  'fülle tbvAbnehmer aus
+  For i = 0 To intSpaltenAbnehmer - 1
+    tbvAbnehmer[i, 0].text = i + 1
+    tbvAbnehmer[i, 1].text = strDatensatzAbnehmerMIFtemp[i + 3]
+  Next
+End
+
+
+Public Sub btnQ_Click()
+  txlQ.text = tbvAbnehmer.Row + 1
+  Global.intAbnehmerQ = tbvAbnehmer.Row + 1
+End
+
+
+Public Sub btnQ_KeyPress()
+  txlQ.text = ""
+  Global.intAbnehmerQ = 0
+End
+
+
+Public Sub btnTYP_Click()
+  txlTYP.text = tbvAbnehmer.Row + 1
+  Global.intAbnehmerTYP = tbvAbnehmer.Row + 1
+End
+
+
+Public Sub btnTYP_KeyPress()
+  txlTYP.text = ""
+  Global.intAbnehmerTYP = 0
+End
+
+
+Public Sub Erzeuge_AbnehmerMID()
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim strElement As String        'Hier wird ein Element aus dem gesplitteten Variablenfeld abgelegt
+Dim strGesplittet As String[]   'Dieses Datenfeld nimmt die gesplittete Zeile auf
+Dim strDatensatzAbnehmer As New String[Global.conSpaltenAbnehmer, Global.conMaxDatensaetze]
+Dim strDatensatzAbnehmertemp As New String[100, Global.conMaxDatensaetze]
+Dim intZeilenAbnehmertemp As Integer
+Dim intAbnehmertempSpaltenzahl As Integer
+Dim a, b, i, j As Integer
+
+' lese Abnehmertemp mid
+  a = 0
+  b = 0
+
+  If Right$(Global.strPfadAbnehmerdatei, 4) = ".mif" Then hsDatei = Open Left$(Global.strPfadAbnehmerdatei, -4) & ".mid" For Input 'öffnen der Datei Abnehmer.MID
+  If Right$(Global.strPfadAbnehmerdatei, 4) = ".MIF" Then hsDatei = Open Left$(Global.strPfadAbnehmerdatei, -4) & ".MID" For Input 'öffnen der Datei Abnehmer.MID
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strZeile = Replace$(strZeile, ",", Chr(9))
+    strZeile = Replace$(strZeile, Chr(34), "")
+    strGesplittet = Split(strZeile, Chr(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+    For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+      strDatensatzAbnehmertemp[a, b] = Replace$(strElement, "\r", "")
+      a = a + 1   'nächste Spalte
+    Next    'nächstes Element in strGesplittet
+    intAbnehmertempSpaltenzahl = a
+    a = 0   'die Spaltennummer wird zurückgesetzt
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+
+  intZeilenAbnehmertemp = b
+  Close #hsDatei  'schließe Datei Abnehmer.MID
+
+
+
+  ' erzeuge strAbnehmer
+  For i = 0 To intZeilenAbnehmertemp - 1
+    'Spalte Altes Pmax
+    strDatensatzAbnehmer[0, i] = "0"
+    'Spalte Q
+    If Global.intAbnehmerQ > 0 Then
+      strDatensatzAbnehmer[1, i] = strDatensatzAbnehmertemp[Global.intAbnehmerQ - 1, i]
+    Else
+      strDatensatzAbnehmer[1, i] = "0"
+    Endif
+    'Spalte Typ
+    If Global.intAbnehmerTyp > 0 Then
+      strDatensatzAbnehmer[2, i] = strDatensatzAbnehmertemp[Global.intAbnehmerTyp - 1, i]
+    Else
+      strDatensatzAbnehmer[2, i] = "0"
+    Endif
+  Next
+  
+  'schreibe rfAbnehmer.mid  
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNameAbnehmer & ".MID" For Output Create     'Öffne die Datei zum Schreiben
+  hsDatei.EndOfLine = gb.Windows
+  
+  For i = 0 To intZeilenAbnehmertemp - 1  'Schleife über die Bauteile
+    strZeile = ""
+    For j = 0 To Global.conSpaltenAbnehmer - 2
+      strZeile &= strDatensatzAbnehmer[j, i] & Chr$(9)
+    Next
+    strZeile &= strDatensatzAbnehmer[Global.conSpaltenAbnehmer - 1, i]
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  Close #hsDatei   'Schließe die Datei
+End
+
+
+
+Public Sub btnOK_Click()
+  Dim strOrdner As String
+  Dim booOK As Boolean
+  booOK = False
+  If ficAbnehmerdatei.value <> "" Then
+    Global.strPfadAbnehmerdatei = ficAbnehmerdatei.Value
+    strOrdner = ficAbnehmerdatei.Dir
+    If (Exist(Left$(Global.strPfadAbnehmerdatei, -3) & "prj")) Then
+      Shell "rm " & Left$(Global.strPfadAbnehmerdatei, -3) & "prj"
+    Endif
+    If Right$(Global.strPfadAbnehmerdatei, 3) = "shp" Or Right$(Global.strPfadAbnehmerdatei, 3) = "SHP" Then
+      Shell "ogr2ogr " & strOrdner & " -f " & Chr(34) & "MapInfo File" & Chr(34) & " -dsco FORMAT=MIF " & Global.strPfadAbnehmerdatei Wait
+      Global.strPfadAbnehmerdatei = Left$(Global.strPfadAbnehmerdatei, -3) & "mif"
+      booOK = True
+    Endif
+    If Right$(Global.strPfadAbnehmerdatei, 3) = "mif" Or Right$(Global.strPfadAbnehmerdatei, 3) = "MIF" Then
+      booOk = True
+    Endif
+    If booOK Then
+      Programmcode.Bereinige_AbnehmerMIF()
+      Programmcode.Erzeuge_AbnehmerMIF()
+      panDateiwahl4a.Visible = False
+      panDateiwahl4b.Visible = True
+      Lese_tbvAbnehmer()
+    Endif
+  Endif
+End
+
+Public Sub btnExit_Click()
+  Global.strPfadAbnehmerdatei = ficAbnehmerdatei.value
+  FInitialisierungDateiwahl4.CLOSE
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End
+
+Public Sub btnOK2_Click()
+  Erzeuge_AbnehmerMID()
+  FInitialisierungDateiwahl4.CLOSE
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+  FInitialisierung.Form_open
+End
+
+Public Sub btnExit2_Click()
+  Global.strPfadAbnehmerdatei = ficAbnehmerdatei.value
+  FInitialisierungDateiwahl4.CLOSE
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End
+
+
+
+

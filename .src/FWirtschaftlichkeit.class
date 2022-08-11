@@ -1,0 +1,58 @@
+' Gambas class file
+
+Public Sub Form_open()
+  If Global.fltInvestWS = 0 Then Global.fltInvestWS = 3000
+  If Global.fltZinssatzKapital = 0 Then Global.fltZinssatzKapital = 0.04
+  If Global.fltPreissteigerungAllg = 0 Then Global.fltPreissteigerungAllg = 0.02
+  If Global.fltEnergiepreisABW = 0 Then Global.fltEnergiepreisABW = 0.05
+  If Global.fltStrompreis = 0 Then Global.fltStrompreis = 0.20
+  If Global.fltEnergiepreisSPL = 0 Then Global.fltEnergiepreisSPL = 0.055
+  If Global.fltPreissteigerungStrom = 0 Then Global.fltPreissteigerungStrom = 0.03
+  If Global.fltPreissteigerungSPL = 0 Then Global.fltPreissteigerungSPL = 0.05
+  If Global.fltPreissteigerungLohn = 0 Then Global.fltPreissteigerungLohn = 0.02
+  If Global.fltZeitraum = 0 Then Global.fltZeitraum = 1
+  If Global.fltetaSPL = 0 Then Global.fltetaSPL = 0.85  
+  
+  valPreisWS.value = Global.fltInvestWS
+  valPreisSP.value = Global.fltInvestSPL
+  valZinssatzKap.value = Global.fltZinssatzKapital * 100
+  valPreissteigerungAll.value = Global.fltPreissteigerungAllg * 100
+  valAbwaermepreis.value = Global.fltEnergiepreisABW * 1000
+  valStrompreis.value = Global.fltStrompreis * 1000
+  valEnergiepreisSP.Value = Global.fltEnergiepreisSPL * 1000
+  valPreissteigerungST.value = Global.fltPreissteigerungStrom * 100
+  valPreissteigerungSP.value = Global.fltPreissteigerungSPL * 100
+  valPreissteigerungLK.value = Global.fltPreissteigerungLohn * 100
+  valZeit.Value = Global.fltZeitraum
+  valLeistungGL.Value = Global.fltLeistungGL
+  valetaSPL.Value = Global.fltetaSPL * 100
+End
+
+
+Public Sub btnOK_Click()
+  Global.fltInvestWS = valPreisWS.Value
+  Global.fltInvestSPL = valPreisSP.value
+  Global.fltZinssatzKapital = valZinssatzKap.value / 100
+  Global.fltPreissteigerungAllg = valPreissteigerungAll.value / 100
+  Global.fltEnergiepreisABW = valAbwaermepreis.value / 1000
+  Global.fltStrompreis = valStrompreis.value / 1000
+  Global.fltEnergiepreisSPL = valEnergiepreisSP.Value / 1000
+  Global.fltPreissteigerungStrom = valPreissteigerungST.value / 100
+  Global.fltPreissteigerungSPL = valPreissteigerungSP.value / 100
+  Global.fltPreissteigerungLohn = valPreissteigerungLK.value / 100
+  Global.fltZeitraum = valZeit.Value
+  Global.fltLeistungGL = valLeistungGL.Value
+  Global.fltetaSPL = valetaSPL.Value / 100
+  
+  Programmcode.Wirtschaftlichkeitsberechnung()
+  FWirtschaftlichkeit.Close
+  FSimulation_Ausgabe.Show
+  FSimulation_Ausgabe.Ergebnisdarstellung()
+  
+End
+
+
+Public Sub btnExit_Click()
+  FWirtschaftlichkeit.Close
+  FSimulation_Ausgabe.Show
+End

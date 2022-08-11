@@ -1,0 +1,43 @@
+' Gambas class file
+
+Public Sub Form_open()
+  ficTrassendatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficTrassendatei.Filter = ["*.shp;*.SHP;*.mif;*.MIF", "shape/mapinfo Datei"]
+  ficTrassendatei.FilterIndex = 0
+End
+
+Public Sub btnOK_Click()
+  Dim strOrdner As String
+  Dim booOK As Boolean
+  booOK = False
+  If ficTrassendatei.value <> "" Then
+    Global.strPfadTrassendatei = ficTrassendatei.Value
+    strOrdner = ficTrassendatei.Dir
+    If (Exist(Left$(Global.strPfadTrassendatei, -3) & "prj")) Then
+      Shell "rm " & Left$(Global.strPfadTrassendatei, -3) & "prj"
+    Endif
+    If Right$(Global.strPfadTrassendatei, 3) = "shp" Or Right$(Global.strPfadTrassendatei, 3) = "SHP" Then
+      Shell "ogr2ogr " & strOrdner & " -f " & Chr(34) & "MapInfo File" & Chr(34) & " -dsco FORMAT=MIF " & Global.strPfadTrassendatei Wait
+      Global.strPfadTrassendatei = Left$(Global.strPfadTrassendatei, -3) & "mif"
+      booOK = True
+    Endif
+    If Right$(Global.strPfadTrassendatei, 3) = "mif" Or Right$(Global.strPfadTrassendatei, 3) = "MIF" Then
+      booOk = True
+    Endif
+    
+    If booOk Then
+      Programmcode.Erzeuge_NetzTrasse()
+      FInitialisierungDateiwahl3.CLOSE
+      FInitialisierung.Show
+      FInitialisierung.Enabled = True
+      FInitialisierung.Form_open
+    Endif
+  Endif
+End
+
+Public Sub btnExit_Click()
+  Global.strPfadTrassendatei = ficTrassendatei.value
+  FInitialisierungDateiwahl3.CLOSE
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End

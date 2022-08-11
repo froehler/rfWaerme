@@ -1,0 +1,69 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(50.75,0,78.625,50)
+  Background = &HD9DADB&
+  Resizable = False
+  { panDateiwahl4a Panel
+    MoveScaled(0,4.25,78.625,45.75)
+    { ficAbnehmerdatei FileChooser
+      MoveScaled(1,1,76,37.125)
+    }
+    { btnOK Button
+      MoveScaled(1,40,8,4.875)
+      Text = ("OK")
+    }
+    { btnExit Button
+      MoveScaled(70,40,8,4.875)
+      Text = ("Exit")
+    }
+  }
+  { panDateiwahl4b Panel
+    MoveScaled(0,4,78.625,45.75)
+    Visible = False
+    { btnOK2 Button
+      MoveScaled(1,40,8,4.875)
+      Text = ("OK")
+    }
+    { btnExit2 Button
+      MoveScaled(70,40,8,4.875)
+      Text = ("Exit")
+    }
+    { tbvAbnehmer TableView
+      MoveScaled(45,2,33,37)
+      Mode = Select.Single
+    }
+    { TextLabel2 TextLabel
+      MoveScaled(1,3,26,4)
+      Text = ("Jahreswärmebedarf [kWh/a]")
+    }
+    { btnQ Button
+      MoveScaled(34,2,8,4.875)
+      Text = ("Wahl")
+    }
+    { txlPmax TextLabel
+      MoveScaled(28,17,4,4)
+    }
+    { txlQ TextLabel
+      MoveScaled(28,3,4,4)
+    }
+    { TextLabel3 TextLabel
+      MoveScaled(1,10,26,4)
+      Text = ("Gebäudetyp")
+    }
+    { txlTYP TextLabel
+      MoveScaled(28,10,4,4)
+    }
+    { btnTYP Button
+      MoveScaled(34,9,8,4.875)
+      Text = ("Wahl")
+    }
+  }
+  { Label8 Label
+    MoveScaled(1,1,44,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Abnehmerdatei auswählen (shp / mif)")
+  }
+}

@@ -1,0 +1,165 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(50.75,0,78.625,50)
+  Background = &HD9DADB&
+  Resizable = False
+  { valPreisWS ValueBox
+    MoveScaled(47,4,13,4)
+  }
+  { valPreisSP ValueBox
+    MoveScaled(47,7,13,4)
+  }
+  { valZinssatzKap ValueBox
+    MoveScaled(47,10,13,4)
+  }
+  { valPreissteigerungAll ValueBox
+    MoveScaled(47,13,13,4)
+  }
+  { valLeistungGL ValueBox
+    MoveScaled(47,16,13,4)
+  }
+  { valAbwaermepreis ValueBox
+    MoveScaled(47,19,13,4)
+  }
+  { valStrompreis ValueBox
+    MoveScaled(47,22,13,4)
+  }
+  { valPreissteigerungST ValueBox
+    MoveScaled(47,25,13,4)
+  }
+  { valetaSPL ValueBox
+    MoveScaled(47,28,13,4)
+  }
+  { valEnergiepreisSP ValueBox
+    MoveScaled(47,31,13,4)
+  }
+  { valPreissteigerungSP ValueBox
+    MoveScaled(47,34,13,4)
+  }
+  { valPreissteigerungLK ValueBox
+    MoveScaled(47,37,13,4)
+  }
+  { valZeit ValueBox
+    MoveScaled(47,40,13,4)
+  }
+  { btnOK Button
+    MoveScaled(1,44,8,4.875)
+    Text = ("OK")
+  }
+  { btnExit Button
+    MoveScaled(69,44,8,4.875)
+    Text = ("Exit")
+  }
+  { Label8 Label
+    MoveScaled(1,1,55,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Wirtschaftlichkeitsdaten")
+  }
+  { TextLabel20 TextLabel
+    MoveScaled(1,4,39,4)
+    Text = ("Investitionskosten WärmeStation")
+  }
+  { TextLabel21 TextLabel
+    MoveScaled(63,4,6.5,4)
+    Text = ("€/WS")
+  }
+  { TextLabel3 TextLabel
+    MoveScaled(1,10,39,4)
+    Text = ("Zinssatz Kapital")
+  }
+  { TextLabel2 TextLabel
+    MoveScaled(63,10,6.5,4)
+    Text = ("%/a")
+  }
+  { TextLabel4 TextLabel
+    MoveScaled(63,13,6.5,4)
+    Text = ("%/a")
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(1,13,39,4)
+    Text = ("allgemeine Preissteigerung")
+  }
+  { TextLabel5 TextLabel
+    MoveScaled(1,22,39,4)
+    Text = ("Strompreis")
+  }
+  { TextLabel6 TextLabel
+    MoveScaled(63,22,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel7 TextLabel
+    MoveScaled(63,34,6.5,4)
+    Text = ("%/a")
+  }
+  { TextLabel8 TextLabel
+    MoveScaled(1,34,39,4)
+    Text = ("Energiepreissteigerung Spitzenlastkessel")
+  }
+  { TextLabel9 TextLabel
+    MoveScaled(63,25,6.5,4)
+    Text = ("%/a")
+  }
+  { TextLabel10 TextLabel
+    MoveScaled(1,25,39,4)
+    Text = ("Energiepreissteigerung Strom")
+  }
+  { TextLabel11 TextLabel
+    MoveScaled(63,37,6.5,4)
+    Text = ("%/a")
+  }
+  { TextLabel12 TextLabel
+    MoveScaled(1,37,39,4)
+    Text = ("Lohnkostensteigerung")
+  }
+  { TextLabel13 TextLabel
+    MoveScaled(1,31,39,4)
+    Text = ("Energiepreis Spitzenlasterzeuger")
+  }
+  { TextLabel14 TextLabel
+    MoveScaled(63,31,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel15 TextLabel
+    MoveScaled(63,40,6.5,4)
+    Text = ("a")
+  }
+  { TextLabel16 TextLabel
+    MoveScaled(1,40,39,4)
+    Text = ("Betrachtungszeitraum")
+  }
+  { TextLabel17 TextLabel
+    MoveScaled(1,7,39,4)
+    Text = ("Investitionskosten Spitzenlasterzeuger")
+  }
+  { TextLabel18 TextLabel
+    MoveScaled(63,7,6.5,4)
+    Text = ("€")
+  }
+  { TextLabel23 TextLabel
+    MoveScaled(1,19,39,4)
+    Text = ("Abwärmepreis")
+  }
+  { TextLabel24 TextLabel
+    MoveScaled(63,19,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel25 TextLabel
+    MoveScaled(1,16,39,4)
+    Text = ("Grundlastleistung")
+  }
+  { TextLabel26 TextLabel
+    MoveScaled(63,16,6.5,4)
+    Text = ("kW")
+  }
+  { TextLabel27 TextLabel
+    MoveScaled(1,28,39,4)
+    Text = ("Jahresnutzungsgrad Spitzenlasterzeuger")
+  }
+  { TextLabel28 TextLabel
+    MoveScaled(63,28,6.5,4)
+    Text = ("%")
+  }
+}

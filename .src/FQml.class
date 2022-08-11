@@ -1,0 +1,578 @@
+' Gambas class file
+
+Public Sub Form_Open()
+  txlPfad.text = Global.strtxbPfad
+End
+
+Public Sub Form_Activate()
+  Legendezeichnen()
+End
+
+
+
+Public Function HSV2R(H_in As Integer, S_in As Integer, V_in As Integer) As Integer
+Dim R, f, H, hi, p, q, S, t, V As Float
+  H = H_in
+  S = S_in / 100
+  V = V_in / 100
+  hi = Int(H / 60)
+  f = (H / 60) - hi
+  p = V * (1 - S)
+  q = V * (1 - (S * f))
+  t = V * (1 - S * (1 - f))
+  
+  Select Case hi
+    Case 0
+      R = 2.55 * V * 100
+    Case 1
+      R = 2.55 * q * 100
+    Case 2
+      R = 2.55 * p * 100
+    Case 3
+      R = 2.55 * p * 100
+    Case 4
+      R = 2.55 * t * 100
+    Case 5
+      R = 2.55 * V * 100
+    Case 6
+      R = 2.55 * V * 100
+  End Select
+  Return R
+End
+
+
+Public Function HSV2G(H_in As Integer, S_in As Integer, V_in As Integer) As Integer
+Dim G, f, H, hi, p, q, S, t, V As Float
+  H = H_in
+  S = S_in / 100
+  V = V_in / 100
+  hi = Int(H / 60)
+  f = (H / 60) - hi
+  p = V * (1 - S)
+  q = V * (1 - (S * f))
+  t = V * (1 - S * (1 - f))
+  
+  Select Case hi
+    Case 0
+      G = 2.55 * t * 100
+    Case 1
+      G = 2.55 * V * 100
+    Case 2
+      G = 2.55 * V * 100
+    Case 3
+      G = 2.55 * q * 100
+    Case 4
+      G = 2.55 * p * 100
+    Case 5
+      G = 2.55 * p * 100
+    Case 6
+      G = 2.55 * t * 100
+  End Select
+  Return G
+End
+
+
+Public Function HSV2B(H_in As Integer, S_in As Integer, V_in As Integer) As Integer
+Dim B, f, H, hi, p, q, S, t, V As Float
+  H = H_in
+  S = S_in / 100
+  V = V_in / 100
+  hi = Int(H / 60)
+  f = (H / 60) - hi
+  p = V * (1 - S)
+  q = V * (1 - (S * f))
+  t = V * (1 - S * (1 - f))
+  
+  Select Case hi
+    Case 0
+      B = 2.55 * p * 100
+    Case 1
+      B = 2.55 * p * 100
+    Case 2
+      B = 2.55 * t * 100
+    Case 3
+      B = 2.55 * V * 100
+    Case 4
+      B = 2.55 * V * 100
+    Case 5
+      B = 2.55 * q * 100
+    Case 6
+      B = 2.55 * p * 100
+  End Select
+  Return B
+End
+
+
+Public Sub VLRL_Click()
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+End
+
+Public Sub Art_Click()
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+End
+
+Public Sub ML_Click()
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+End
+
+Public Sub txbVorlauftemperatur_LostFocus()
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+End
+
+Public Sub txbRuecklauftemperatur_LostFocus()
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+End
+
+
+
+
+
+Public Sub Farben_Trasse()
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim i As Integer
+Dim aktTemp As Float
+Dim dTemp As Float
+Dim intRGB As New Integer[3, CInt(txbAnzahlFarben.Text)]
+Dim fltTemperatur As New Float[2, CInt(txbAnzahlFarben.Text)]
+Dim aktH As Float
+Dim dH As Float
+Dim strTempArt As String
+
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then strTempArt = "Mitteltemperatur_VL"
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then strTempArt = "Mitteltemperatur_VL2a"
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then strTempArt = "Mitteltemperatur_VL2b"
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then strTempArt = "Mitteltemperatur_RL"
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then strTempArt = "Mitteltemperatur_RL2a"
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then strTempArt = "Mitteltemperatur_RL2b"
+  
+  aktH = 275
+  dH = 285 / (CFloat(txbAnzahlFarben.Text) - 1)
+
+  aktTemp = CFloat(txbRuecklauftemperatur.Text)
+  dTemp = CFloat(txbVorlauftemperatur.Text) - CFloat(txbRuecklauftemperatur.Text)
+  dTemp /= CFloat(txbAnzahlFarben.Text)
+  
+  
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1
+    fltTemperatur[0, i] = Round(aktTemp, -2)
+    fltTemperatur[1, i] = Round((aktTemp + dTemp), -2)
+    intRGB[0, i] = HSV2R(aktH, 100, 100)
+    intRGB[1, i] = HSV2G(aktH, 100, 100)
+    intRGB[2, i] = HSV2B(aktH, 100, 100)
+
+    aktH -= dH
+    If aktH < 0 Then aktH += 360
+    aktH = Round(aktH, 0)
+    aktTemp += dTemp
+  Next
+   
+  'Schreibe Datei.QML
+  hsDatei = Open txlPfad.text & txbDatei.Text & ".qml" For Output Create     'Öffne die Datei zum Schreiben
+  hsDatei.EndOfLine = gb.Windows
+  
+  strZeile = "<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "<qgis styleCategories=" & Chr$(34) & "Symbology" & Chr$(34) & " version=" & Chr$(34) & "3.8.1-Zanzibar" & Chr$(34) & ">"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <renderer-v2 graduatedMethod=" & Chr$(34) & "GraduatedColor" & Chr$(34) & " symbollevels=" & Chr$(34) & "0" & Chr$(34) & " forceraster=" & Chr$(34) & "0" & Chr$(34) & " attr=" & Chr$(34) & strTempArt & Chr$(34) & " type=" & Chr$(34) & "graduatedSymbol" & Chr$(34) & " enableorderby=" & Chr$(34) & "0" & Chr$(34) & ">" 
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  
+  strZeile = "    <ranges>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1 'ranges
+    strZeile = "      <range upper=" & Chr$(34) & CStr(fltTemperatur[1, i]) & Chr$(34) & " lower=" & Chr$(34) & CStr(fltTemperatur[0, i]) & Chr$(34) & " symbol=" & Chr$(34) & Str(i) & Chr$(34) & " render=" & Chr$(34) & "true" & Chr$(34) & " label=" & Chr$(34) & CStr(fltTemperatur[0, i]) & " - " & CStr(fltTemperatur[1, i]) & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  strZeile = "    </ranges>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  
+  strZeile = "    <symbols>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1 'symbols
+    strZeile = "      <symbol force_rhr=" & Chr$(34) & "0" & Chr$(34) & " alpha=" & Chr$(34) & "1" & Chr$(34) & " clip_to_extent=" & Chr$(34) & "1" & Chr$(34) & " name=" & Chr$(34) & Str(i) & Chr$(34) & " type=" & Chr$(34) & "line" & Chr$(34) & ">"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "        <layer locked=" & Chr$(34) & "0" & Chr$(34) & " pass=" & Chr$(34) & "0" & Chr$(34) & " class=" & Chr$(34) & "SimpleLine" & Chr$(34) & " enabled=" & Chr$(34) & "1" & Chr$(34) & ">"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "square" & Chr$(34) & " k=" & Chr$(34) & "capstyle" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "5;2" & Chr$(34) & " k=" & Chr$(34) & "customdash" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "3x:0,0,0,0,0,0" & Chr$(34) & " k=" & Chr$(34) & "customdash_map_unit_scale" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "MM" & Chr$(34) & " k=" & Chr$(34) & "customdash_unit" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "0" & Chr$(34) & " k=" & Chr$(34) & "draw_inside_polygon" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "bevel" & Chr$(34) & " k=" & Chr$(34) & "joinstyle" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & CStr(intRGB[0, i]) & "," & CStr(intRGB[1, i]) & "," & CStr(intRGB[2, i]) & ",255" & Chr$(34) & " k=" & Chr$(34) & "line_color" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "solid" & Chr$(34) & " k=" & Chr$(34) & "line_style" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "0.7" & Chr$(34) & " k=" & Chr$(34) & "line_width" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "MM" & Chr$(34) & " k=" & Chr$(34) & "line_width_unit" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "0" & Chr$(34) & " k=" & Chr$(34) & "offset" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "3x:0,0,0,0,0,0" & Chr$(34) & " k=" & Chr$(34) & "offset_map_unit_scale" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "MM" & Chr$(34) & " k=" & Chr$(34) & "offset_unit" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "0" & Chr$(34) & " k=" & Chr$(34) & "ring_filter" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "0" & Chr$(34) & " k=" & Chr$(34) & "use_custom_dash" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop v=" & Chr$(34) & "3x:0,0,0,0,0,0" & Chr$(34) & " k=" & Chr$(34) & "width_map_unit_scale" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <data_defined_properties>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "            <Option type=" & Chr$(34) & "Map" & Chr$(34) & ">"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "              <Option value=" & Chr$(34) & Chr$(34) & " name=" & Chr$(34) & "name" & Chr$(34) & " type=" & Chr$(34) & "QString" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "              <Option name=" & Chr$(34) & "properties" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "              <Option value=" & Chr$(34) & "collection" & Chr$(34) & " name=" & Chr$(34) & "type" & Chr$(34) & " type=" & Chr$(34) & "QString" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "            </Option>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          </data_defined_properties>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "        </layer>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "      </symbol>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+
+  Next
+  strZeile = "    </symbols>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <source-symbol>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    </source-symbol>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+
+  strZeile = "    <colorramp name=" & Chr$(34) & "[source]" & Chr$(34) & " type=" & Chr$(34) & "Spectral" & Chr$(34) & ">"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop v=" & Chr$(34) & "255,255,255,255" & Chr$(34) & " k=" & Chr$(34) & "color1" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop v=" & Chr$(34) & "255,0,0,255" & Chr$(34) & " k=" & Chr$(34) & "color2" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop v=" & Chr$(34) & "0" & Chr$(34) & " k=" & Chr$(34) & "discrete" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop v=" & Chr$(34) & "Spectral" & Chr$(34) & " k=" & Chr$(34) & "rampType" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    </colorramp>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <mode name=" & Chr$(34) & "equal" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <symmetricMode astride=" & Chr$(34) & "false" & Chr$(34) & " symmetryPoint=" & Chr$(34) & "82.0231" & Chr$(34) & " enabled=" & Chr$(34) & "false" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <rotation/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <sizescale/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <labelformat trimtrailingzeroes=" & Chr$(34) & "false" & Chr$(34) & " decimalplaces=" & Chr$(34) & "1" & Chr$(34) & " format=" & Chr$(34) & "%1 - %2" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  </renderer-v2>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <blendMode>0</blendMode>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <featureBlendMode>0</featureBlendMode>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <layerGeometryType>1</layerGeometryType>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "</qgis>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+   
+  Close #hsDatei   'Schließe die Datei
+End
+
+Public Sub Farben_Punkte()
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim i As Integer
+Dim aktTemp As Float
+Dim dTemp As Float
+Dim intRGB As New Integer[3, CInt(txbAnzahlFarben.Text)]
+Dim fltTemperatur As New Float[2, CInt(txbAnzahlFarben.Text)]
+Dim aktH As Float
+Dim dH As Float
+Dim strTempArt As String
+
+  If rdbVL.value = True And rdbPunkte.value = True Then strTempArt = "TempVL"
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then strTempArt = "TempVL2a"
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then strTempArt = "TempVL2b"
+  If rdbRL.value = True And rdbPunkte.value = True Then strTempArt = "TempRL"
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then strTempArt = "TempRL2a"
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then strTempArt = "TempRL2b"
+  
+  aktH = 275
+  dH = 285 / (CFloat(txbAnzahlFarben.Text) - 1)
+
+  aktTemp = CFloat(txbRuecklauftemperatur.Text)
+  dTemp = CFloat(txbVorlauftemperatur.Text) - CFloat(txbRuecklauftemperatur.Text)
+  dTemp /= CFloat(txbAnzahlFarben.Text)
+  
+  
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1
+    fltTemperatur[0, i] = Round(aktTemp, -2)
+    fltTemperatur[1, i] = Round((aktTemp + dTemp), -2)
+    intRGB[0, i] = HSV2R(aktH, 100, 100)
+    intRGB[1, i] = HSV2G(aktH, 100, 100)
+    intRGB[2, i] = HSV2B(aktH, 100, 100)
+
+    aktH -= dH
+    If aktH < 0 Then aktH += 360
+    aktH = Round(aktH, 0)
+    aktTemp += dTemp
+  Next
+   
+  'Schreibe Datei.QML
+  hsDatei = Open txlPfad.text & txbDatei.Text & ".qml" For Output Create     'Öffne die Datei zum Schreiben
+  hsDatei.EndOfLine = gb.Windows
+
+
+  strZeile = "<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "<qgis version=" & Chr$(34) & "3.8.1-Zanzibar" & Chr$(34) & " styleCategories=" & Chr$(34) & "Symbology" & Chr$(34) & ">"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <renderer-v2 type=" & Chr$(34) & "graduatedSymbol" & Chr$(34) & " symbollevels=" & Chr$(34) & "0" & Chr$(34) & " attr=" & Chr$(34) & strTempArt & Chr$(34) & " graduatedMethod=" & Chr$(34) & "GraduatedColor" & Chr$(34) & " forceraster=" & Chr$(34) & "0" & Chr$(34) & " enableorderby=" & Chr$(34) & "0" & Chr$(34) & ">" 
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  
+  strZeile = "    <ranges>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1 'ranges
+    strZeile = "      <range symbol=" & Chr$(34) & Str(i) & Chr$(34) & " label=" & Chr$(34) & CStr(fltTemperatur[0, i]) & " - " & CStr(fltTemperatur[1, i]) & Chr$(34) & " lower=" & Chr$(34) & CStr(fltTemperatur[0, i]) & Chr$(34) & " render=" & Chr$(34) & "true" & Chr$(34) & " upper=" & Chr$(34) & CStr(fltTemperatur[1, i]) & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  strZeile = "    </ranges>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  
+  strZeile = "    <symbols>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1 'symbols
+    strZeile = "      <symbol type=" & Chr$(34) & "marker" & Chr$(34) & " clip_to_extent=" & Chr$(34) & "1" & Chr$(34) & " name=" & Chr$(34) & Str(i) & Chr$(34) & " alpha=" & Chr$(34) & "1" & Chr$(34) & " force_rhr=" & Chr$(34) & "0" & Chr$(34) & ">"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei    
+    strZeile = "        <layer locked=" & Chr$(34) & "0" & Chr$(34) & " enabled=" & Chr$(34) & "1" & Chr$(34) & " class=" & Chr$(34) & "SimpleMarker" & Chr$(34) & " pass=" & Chr$(34) & "0" & Chr$(34) & ">"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "angle" & Chr$(34) & " v=" & Chr$(34) & "0" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "color" & Chr$(34) & " v=" & Chr$(34) & CStr(intRGB[0, i]) & "," & CStr(intRGB[1, i]) & "," & CStr(intRGB[2, i]) & ",255" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "horizontal_anchor_point" & Chr$(34) & " v=" & Chr$(34) & "1" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "joinstyle" & Chr$(34) & " v=" & Chr$(34) & "bevel" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "name" & Chr$(34) & " v=" & Chr$(34) & "circle" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "offset" & Chr$(34) & " v=" & Chr$(34) & "0,0" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "offset_map_unit_scale" & Chr$(34) & " v=" & Chr$(34) & "3x:0,0,0,0,0,0" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "offset_unit" & Chr$(34) & " v=" & Chr$(34) & "MM" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "outline_color" & Chr$(34) & " v=" & Chr$(34) & "35,35,35,255" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "outline_style" & Chr$(34) & " v=" & Chr$(34) & "solid" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "outline_width" & Chr$(34) & " v=" & Chr$(34) & "0" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "outline_width_map_unit_scale" & Chr$(34) & " v=" & Chr$(34) & "3x:0,0,0,0,0,0" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "outline_width_unit" & Chr$(34) & " v=" & Chr$(34) & "MM" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "scale_method" & Chr$(34) & " v=" & Chr$(34) & "diameter" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "size" & Chr$(34) & " v=" & Chr$(34) & "2" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "size_map_unit_scale" & Chr$(34) & " v=" & Chr$(34) & "3x:0,0,0,0,0,0" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "size_unit" & Chr$(34) & " v=" & Chr$(34) & "MM" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <prop k=" & Chr$(34) & "vertical_anchor_point" & Chr$(34) & " v=" & Chr$(34) & "1" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          <data_defined_properties>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "            <Option type=" & Chr$(34) & "Map" & Chr$(34) & ">"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "              <Option type=" & Chr$(34) & "QString" & Chr$(34) & " value=" & Chr$(34) & Chr$(34) & " name=" & Chr$(34) & "name" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "              <Option name=" & Chr$(34) & "properties" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "              <Option type=" & Chr$(34) & "QString" & Chr$(34) & " value=" & Chr$(34) & "collection" & Chr$(34) & " name=" & Chr$(34) & "type" & Chr$(34) & "/>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "            </Option>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "          </data_defined_properties>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "        </layer>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+    strZeile = "      </symbol>"
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  strZeile = "    </symbols>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <source-symbol>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    </source-symbol>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <colorramp type=" & Chr$(34) & "gradient" & Chr$(34) & " name=" & Chr$(34) & "[source]" & Chr$(34) & ">"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop k=" & Chr$(34) & "color1" & Chr$(34) & " v=" & Chr$(34) & "255,255,255,255" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop k=" & Chr$(34) & "color1" & Chr$(34) & " v=" & Chr$(34) & "255,0,0,255" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop k=" & Chr$(34) & "discrete" & Chr$(34) & " v=" & Chr$(34) & "0" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "      <prop k=" & Chr$(34) & "rampType" & Chr$(34) & " v=" & Chr$(34) & "gradient" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    </colorramp>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <mode name=" & Chr$(34) & "equal" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <symmetricMode enabled=" & Chr$(34) & "false" & Chr$(34) & " astride=" & Chr$(34) & "false" & Chr$(34) & " symmetryPoint=" & Chr$(34) & "74.18000000000001" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <rotation/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <sizescale/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "    <labelformat decimalplaces=" & Chr$(34) & "1" & Chr$(34) & " trimtrailingzeroes=" & Chr$(34) & "false" & Chr$(34) & " format=" & Chr$(34) & "%1 - %2" & Chr$(34) & "/>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  </renderer-v2>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <blendMode>0</blendMode>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <featureBlendMode>0</featureBlendMode>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "  <layerGeometryType>0</layerGeometryType>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  strZeile = "</qgis>"
+  Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Close #hsDatei   'Schließe die Datei
+End
+
+
+Public Sub btnOK_Click()
+  If rdbTrasse.Value = True Then Farben_Trasse()
+  If rdbPunkte.value = True Then Farben_Punkte()
+End
+
+Public Sub btnExit_Click()
+  FQml.CLOSE
+  FMain.Show
+  FMain.Enabled = True
+End
+
+
+
+Public Sub Legendezeichnen()
+Dim fltAbstand As Float
+Dim i As Integer
+  Draw.Begin(drwLegende)
+  ' [GB2:FCOL] Draw.ForeColor = &HD9DADB&
+  Draw.Foreground = &HD9DADB&
+  
+  fltAbstand = drwLegende.Width / (CInt(txbAnzahlFarben.Text) - 1)
+  For i = 1 To drwLegende.Width
+    Draw.Line(i, 0, i - 1, 10)
+  Next
+  
+  ' [GB2:FCOL] Draw.ForeColor = &H000000&
+  Draw.Foreground = &H000000&
+
+  For i = 0 To CInt(txbAnzahlFarben.Text) - 1
+    Select Case i
+      Case CInt(txbAnzahlFarben.Text) - 1
+        Draw.Line(fltAbstand * i - 1, 0, fltAbstand * i - 1, 10)
+      Case Else
+        Draw.Line(fltAbstand * i, 0, fltAbstand * i, 10)
+      End Select
+  Next
+  Draw.End
+End
+
+
+
+Public Sub txbAnzahlFarben_LostFocus()
+  Legendezeichnen()
+End
+
+Public Sub chkMehrleiter_Click()
+  If chkMehrleiter.value = True Then
+    panMLTrasse.Visible = True
+  Else
+    panMLTrasse.Visible = False
+  Endif
+  
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = False Then txbDatei.text = "TrasseRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "TrasseRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbTrasse.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "TrasseRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteVL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteVLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbVL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteVLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = False Then txbDatei.text = "PunkteRL" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML1.value = True Then txbDatei.text = "PunkteRLa" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+  If rdbRL.value = True And rdbPunkte.value = True And chkMehrleiter.Value = True And rdbML2.value = True Then txbDatei.text = "PunkteRLb" & txbVorlauftemperatur.Text & "-" & txbRuecklauftemperatur.Text
+End
+
+

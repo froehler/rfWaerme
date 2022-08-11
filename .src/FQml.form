@@ -1,0 +1,129 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(50.75,0,79,50)
+  Background = &HD9DADB&
+  Resizable = False
+  { btnOK Button
+    MoveScaled(1,44,8,4.875)
+    Text = ("OK")
+  }
+  { btnExit Button
+    MoveScaled(69,44,8,4.875)
+    Text = ("Exit")
+  }
+  { Label8 Label
+    MoveScaled(1,1,42,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Legende erzeugen")
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(1,7,71.375,4)
+    Picture = Picture["HueScale.png"]
+    Stretch = True
+  }
+  { txbAnzahlFarben TextBox
+    MoveScaled(30,19,6,4)
+    Text = ("10")
+    Alignment = Align.Left
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(30,13,13,5)
+    Text = ("Anzahl Teilfarben")
+  }
+  { TextLabel2 TextLabel
+    MoveScaled(1,13,11,7)
+    Text = ("Maximale Temperatur")
+  }
+  { txbVorlauftemperatur TextBox
+    MoveScaled(1,19,6,4)
+    Text = ("80")
+    Alignment = Align.Left
+  }
+  { TextLabel3 TextLabel
+    MoveScaled(64,13,13,6)
+    Text = ("Minimale Temperatur")
+    Alignment = Align.TopLeft
+  }
+  { txbRuecklauftemperatur TextBox
+    MoveScaled(64,19,6,4)
+    Text = ("30")
+    Alignment = Align.Right
+  }
+  { TextLabel4 TextLabel
+    MoveScaled(8,19,4,4)
+    Text = ("°C")
+  }
+  { TextLabel5 TextLabel
+    MoveScaled(71,19,4,4)
+    Text = ("°C")
+  }
+  { txbDatei TextBox
+    MoveScaled(59,24,15,4)
+    Text = ("TrasseVL80-30")
+  }
+  { txlPfad TextLabel
+    MoveScaled(1,24,56,4)
+    Text = ("/")
+    Alignment = Align.Right
+  }
+  { txlPfad2 TextLabel
+    MoveScaled(74,24,4,4)
+    Text = (".qml")
+    Alignment = Align.Left
+  }
+  { Panel1 Panel
+    MoveScaled(14,27,26,9)
+    { rdbVL RadioButton VLRL
+      Name = "rdbVL"
+      MoveScaled(0,0,24,4)
+      Text = ("Vorlauf")
+      Value = True
+    }
+    { rdbRL RadioButton VLRL
+      Name = "rdbRL"
+      MoveScaled(0,3,24,4)
+      Text = ("Rücklauf")
+    }
+  }
+  { panTRPU Panel
+    MoveScaled(1,27,13,8)
+    { rdbPunkte RadioButton Art
+      Name = "rdbPunkte"
+      MoveScaled(0,3,11,4)
+      Text = ("Punkte")
+    }
+    { rdbTrasse RadioButton Art
+      Name = "rdbTrasse"
+      MoveScaled(0,0,11,4)
+      Text = ("Trasse")
+      Value = True
+    }
+  }
+  { drwLegende DrawingArea
+    MoveScaled(1,6,71.375,2.375)
+    Cached = True
+  }
+  { chkMehrleiter CheckBox
+    MoveScaled(1,37,24,4)
+    Visible = False
+    Text = ("Mehrleiternetz")
+  }
+  { panMLTrasse Panel
+    MoveScaled(26,37,38,10)
+    Visible = False
+    { rdbML2 RadioButton ML
+      Name = "rdbML2"
+      MoveScaled(0,3,33,4)
+      Text = ("Trasse 2 (kleinerer Durchmesser)")
+    }
+    { rdbML1 RadioButton ML
+      Name = "rdbML1"
+      MoveScaled(0,0,35,4)
+      Text = ("Trasse 1 (größerer Durchmesser)")
+      Value = True
+    }
+  }
+}

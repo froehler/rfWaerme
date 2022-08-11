@@ -1,0 +1,15 @@
+' Gambas class file
+
+Public Sub Form_Open()
+
+End
+
+
+
+Public Sub btnExit_Click()
+  FCopyright.Close
+  FMain.Show
+  FMain.Enabled = True
+End
+
+

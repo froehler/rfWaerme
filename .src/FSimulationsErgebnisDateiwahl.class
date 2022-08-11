@@ -1,0 +1,118 @@
+' Gambas class file
+
+Public Sub Form_open()
+  ficErgebnisdatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficErgebnisdatei.Filter = ["*.csv;*.CSV", "Tabellen"]
+  ficErgebnisdatei.FilterIndex = 0
+End
+
+Public Sub btnOK_Click()
+  Dim strDateipfad As String
+  Dim hsDatei As Stream
+  Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+  Dim strElement As String        'Hier wird ein Element aus dem gesplitteten Variablenfeld abgelegt
+  Dim strGesplittet As String[]   'Dieses Datenfeld nimmt die gesplittete Zeile auf
+  Dim strDatensatzErgebnis As New String[50, 8790]
+  Dim a, b, i, j, intZeilenErgebnis, intErgebnisSpaltenzahl As Integer
+  Dim intStundenImJahr As Integer
+  
+  If Global.strDatensatzKlimaTag[0, 0] = "366" Then
+    intStundenImJahr = 8784
+  Else
+    intStundenImJahr = 8760
+  Endif
+  
+  For i = 0 To 8790 - 1  'Schleife über alle Stunden
+    For j = 0 To 50 - 1
+      Global.strDatensatzSimErgebnis[j, i] = "0"
+    Next
+  Next
+    
+  For Each strDateipfad In ficErgebnisdatei.SelectedPaths
+    
+    'lese Datei----------------------------------------------------
+    a = 0
+    b = 0
+    hsDatei = Open strDateipfad For Input 'öffnen der jede ErgebnisDatei *.csv
+    While Not Eof(hsDatei)
+      Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+      strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+  
+      For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+        strDatensatzErgebnis[a, b] = Replace$(strElement, "\r", "")
+        a = a + 1   'nächste Spalte
+      Next    'nächstes Element in strGesplittet
+      intErgebnisSpaltenzahl = a
+      a = 0   'die Spaltennummer wird zurückgesetzt
+      b = b + 1   'die Zeilennummer wird um 1 erhöht
+    Wend
+    intZeilenErgebnis = b
+    Close #hsDatei  'schließe Datei NetzTrasse.MID
+    'lese Datei ENDE------------------------------------------------------
+  
+    'Schleife zum Übertragen der strDatensatzErgebnisdateien in global.strDatensatzErgebnis[a,b]-----------------
+    For i = 0 To intZeilenErgebnis - 1
+      For j = 0 To 50 - 1
+        Global.strDatensatzSimErgebnis[j, CInt(strDatensatzErgebnis[0, i]) - 1] = strDatensatzErgebnis[j, i]
+      Next
+    Next
+    'Schleife zum Übertragen der strDatensatzErgebnisdateien in global.strDatensatzErgebnis[a,b]-ENDE----------------
+  Next
+  
+  'Schreibe Ergebnisdatei-------------------------------------------------------------------------------
+  'Schreibe Ergebnis.csv
+  hsDatei = Open Left$(strDateipfad, -5) & "D.csv" For Output Create     'Öffne die Datei zum Schreiben Global.conDateiNameErgebnis
+  hsDatei.EndOfLine = gb.Windows
+  
+  For i = 0 To intStundenImJahr - 1  'Schleife über alle Stunden
+    strZeile = ""
+    
+    For j = 0 To 49 - 1
+      strZeile &= Replace$(Global.strDatensatzSimErgebnis[j, i], ".", ",") & Chr$(9)
+    Next
+    
+    strZeile &= Replace$(Global.strDatensatzSimErgebnis[49, i], ".", ",")
+    
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  Close #hsDatei   'Schließe die Datei
+  'Schreibe Ergebnisdatei-ENDE------------------------------------------------------------------------------
+  
+  'Schreibe Ergebnis.csv
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNameErgebnis & ".csv" For Output Create     'Öffne die Datei zum Schreiben Global.conDateiNameErgebnis
+  hsDatei.EndOfLine = gb.Windows
+  
+  For i = 0 To intStundenImJahr - 1  'Schleife über alle Stunden
+    strZeile = ""
+    
+    For j = 0 To 49 - 1
+      strZeile &= (Global.strDatensatzSimErgebnis[j, i]) & Chr$(9)
+    Next
+    
+    strZeile &= (Global.strDatensatzSimErgebnis[49, i])
+    
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  Close #hsDatei   'Schließe die Datei
+  'Schreibe Ergebnisdatei-ENDE------------------------------------------------------------------------------
+  
+  'Prüfe Daten--------------------------------------------------------------------------------------------
+  a = 0
+  For i = 0 To intStundenImJahr - 1  'Schleife über alle Stunden
+    If Global.strDatensatzSimErgebnis[1, i] <> "0" Then a += 1
+  Next
+  If a < intStundenImJahr Then Message("Nur " & a & " Stundenwerte vorhanden!")
+  'Prüfe Daten-ENDE-------------------------------------------------------------------------------------------
+
+  FSimulationsErgebnisDateiwahl.CLOSE
+  FWirtschaftlichkeit.show
+  FSimulation_Ausgabe.Enabled = True
+End
+
+Public Sub btnExit_Click()
+  'Global.strPfadEinspeiserdatei = ficEinspeiserdatei.value
+  FSimulationsErgebnisDateiwahl.CLOSE
+  FSimulation_Ausgabe.Show
+  FSimulation_Ausgabe.Enabled = True
+End
+

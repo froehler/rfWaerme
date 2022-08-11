@@ -1,0 +1,243 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { btnOK Button
+    MoveScaled(1,73,8,4.875)
+    Text = ("OK")
+  }
+  { Label8 Label
+    MoveScaled(1,1,17,4)
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Initialisierung")
+  }
+  { txlEinspeiserMID TextLabel
+    MoveScaled(1,6,19,4)
+    Enabled = False
+    Text = ("rfEinspeiser.MID")
+  }
+  { txlEinspeiserMIF TextLabel
+    MoveScaled(1,9,19,4)
+    Enabled = False
+    Text = ("rfEinspeiser.MIF")
+  }
+  { txlEinspeiserMID2 TextLabel
+    MoveScaled(24,6,16.25,4)
+    Enabled = False
+    Text = ("txlEinspeiserMID2")
+  }
+  { txlPfad TextLabel
+    MoveScaled(1,1,48,4)
+    Enabled = False
+    Text = ("PFAD")
+    Alignment = Align.Right
+  }
+  { txlEinspeiserMIF2 TextLabel
+    MoveScaled(24,9,16.25,4)
+    Enabled = False
+    Text = ("txlEinspeiserMIF2")
+  }
+  { txlAbnehmerMID TextLabel
+    MoveScaled(1,14,19,4)
+    Enabled = False
+    Text = ("rfAbnehmer.MID")
+  }
+  { txlAbnehmerMIF TextLabel
+    MoveScaled(1,17,19,4)
+    Enabled = False
+    Text = ("rfAbnehmer.MIF")
+  }
+  { txlAbnehmerMID2 TextLabel
+    MoveScaled(24,14,16.25,4)
+    Enabled = False
+    Text = ("txlAbnehmerMID2")
+  }
+  { txlAbnehmerMIF2 TextLabel
+    MoveScaled(24,17,16.25,4)
+    Enabled = False
+    Text = ("txlAbnehmerMIF2")
+  }
+  { txlNetzTrasseMID TextLabel
+    MoveScaled(1,22,19,4)
+    Enabled = False
+    Text = ("rfNetzTrasse.MID")
+  }
+  { txlNetzTrasseMID2 TextLabel
+    MoveScaled(24,22,16.25,4)
+    Enabled = False
+    Text = ("txlNetzTrasseMID2")
+  }
+  { txlNetzTrasseMIF2 TextLabel
+    MoveScaled(24,25,16.25,4)
+    Enabled = False
+    Text = ("txlNetzTrasseMIF2")
+  }
+  { txlNetzTrasseMIF TextLabel
+    MoveScaled(1,25,19,4)
+    Enabled = False
+    Text = ("rfNetzTrasse.MIF")
+  }
+  { txlRohreCSV TextLabel
+    MoveScaled(1,62,19,4)
+    Enabled = False
+    Text = ("rfRohre.csv")
+  }
+  { txlRohreCSV2 TextLabel
+    MoveScaled(24,62,16.25,4)
+    Enabled = False
+    Text = ("txlRohreCSV2")
+  }
+  { btnDWD Button
+    MoveScaled(41,55,8,4.875)
+    Text = ("DWD")
+  }
+  { Separator1 Separator
+    MoveScaled(1,36,48,2)
+  }
+  { btnImportNetzTrasse Button
+    MoveScaled(41,22,8,4.875)
+    Text = ("Import")
+  }
+  { btnImportAbnehmer Button
+    MoveScaled(41,14,8,4.875)
+    Text = ("Import")
+  }
+  { btnImportEinspeiser Button
+    MoveScaled(41,6,8,4.875)
+    Text = ("Import")
+  }
+  { txlRohreCSV3 TextLabel
+    MoveScaled(1,70,23,4)
+    Enabled = False
+    Text = ("rfLastprofile_SigLinDe.csv")
+  }
+  { txlLastprofileCSV2 TextLabel
+    MoveScaled(24,70,16.25,4)
+    Enabled = False
+    Text = ("txlLastprofileCSV")
+  }
+  { txlRohreCSV4 TextLabel
+    MoveScaled(1,58,19,4)
+    Enabled = False
+    Text = ("rfKlimaTag.csv")
+  }
+  { txlKlimaTagCSV2 TextLabel
+    MoveScaled(24,58,16.25,4)
+    Enabled = False
+    Text = ("txlKlimaTagCSV2")
+  }
+  { Separator2 Separator
+    MoveScaled(1,60,48,2)
+  }
+  { btnImportMIF Button
+    MoveScaled(41,29,8,4.875)
+    Text = ("Konvert")
+  }
+  { txlNetzTrasseMID3 TextLabel
+    MoveScaled(1,30,19,4)
+    Enabled = False
+    Text = ("Konvertierung")
+  }
+  { txlNetzTrasseMID4 TextLabel
+    MoveScaled(1,33,19,4)
+    Enabled = False
+    Text = ("MapInfo Datei")
+  }
+  { txlNetzTrasseMIF3 TextLabel
+    MoveScaled(24,33,16.25,4)
+    Enabled = False
+    Text = ("zu rfWaerme")
+  }
+  { txlNetzTrasseMID5 TextLabel
+    MoveScaled(24,30,16.25,4)
+    Enabled = False
+    Text = ("QGIS")
+  }
+  { btnDWDKW Button
+    MoveScaled(41,47,8,4.875)
+    Enabled = False
+    Text = ("DWD")
+  }
+  { txlRohreCSV5 TextLabel
+    MoveScaled(1,49,19,4)
+    Enabled = False
+    Text = ("rfKlimaTagKW.csv")
+  }
+  { txlKlimaTagCSV1 TextLabel
+    MoveScaled(24,49,16.25,4)
+    Enabled = False
+    Text = ("txlKlimaTagKWCSV")
+  }
+  { Label1 Label
+    MoveScaled(1,46,39,4)
+    Text = ("Klimadatensatz der Eingangsdaten")
+  }
+  { Label2 Label
+    MoveScaled(1,55,39,4)
+    Text = ("Klimadatensatz für Berechnung / Simulation")
+  }
+  { btnFTP Button
+    MoveScaled(41,39,8,4.875)
+    Text = ("FTP")
+  }
+  { Label3 Label
+    MoveScaled(1,39,39,3)
+    Text = ("Download Klimadaten (1091 Stationen)")
+  }
+  { Label4 Label
+    MoveScaled(1,41,39,3)
+    Text = ("FTP-Server Deutscher Wetterdienst")
+  }
+  { chbEpiscope CheckBox
+    MoveScaled(1,51,39,4)
+    Text = ("Energiedaten aus Episcope")
+    Value = CheckBox.True
+  }
+  { Panel1 Panel
+    MoveScaled(1.25,64.375,18.75,5.625)
+    { rdb_rfRohre_b RadioButton
+      MoveScaled(0,0,6.25,3)
+      Text = ("bef")
+      Value = True
+    }
+    { PictureBox1 PictureBox
+      MoveScaled(0,3.75,6.25,1.25)
+      Picture = Picture["rfRohre_b.png"]
+    }
+    { rdb_rfRohre_u RadioButton
+      MoveScaled(8.75,0,8.75,3)
+      Text = ("unbef")
+    }
+    { PictureBox2 PictureBox
+      MoveScaled(8.75,3.25,6.25,1.25)
+      Picture = Picture["rfRohre_u.png"]
+    }
+  }
+  { Panel2 Panel
+    MoveScaled(20,64.375,18.75,5.625)
+    { rdb_rfRohre_s RadioButton
+      MoveScaled(0,0,24,3)
+      Text = ("starr")
+      Value = True
+    }
+    { PictureBox3 PictureBox
+      MoveScaled(0,3.75,6.25,1.25)
+      Picture = Picture["rfRohre_s.png"]
+    }
+    { rdb_rfRohre_f RadioButton
+      MoveScaled(8.75,0,8.75,3)
+      Text = ("flex")
+    }
+    { PictureBox4 PictureBox
+      MoveScaled(8.75,3.5,6.25,1.875)
+      Picture = Picture["rfRohre_f.png"]
+    }
+  }
+  { btnrfRohre Button
+    MoveScaled(41,64.375,8,4.875)
+    Text = ("Laden")
+  }
+}

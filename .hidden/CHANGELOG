@@ -1,0 +1,46 @@
+* Thu Aug 11 2022 Robert Fröhler <info@robert-froehler.de> 2.5.0
+- unnötige Variablen und Module entfernt
+- /opt/rfWaerme für initiale Daten --> unter .../Bibliothek als Ordner im Modul
+
+* Wed Nov 18 2020 Robert Fröhler <info@robert-froehler.de> 2.4.0
+
+* Wed Nov 18 2020 Robert Fröhler <info@robert-froehler.de> 2.4.0
+- QGIS Erzeugung QGIS qml auf QGIS 3.8.1 aktualisiert
+
+* Mon Nov 09 2020 Robert Fröhler <info@robert-froehler.de> 2.3.9
+- Korrektur an funQ
+
+* Thu Nov 05 2020 Robert Fröhler <info@robert-froehler.de> 2.3.8
+- Berechnung erfolgt in richtigen Studenwerten mit funQ aus der Simulation
+
+* Sat Oct 31 2020 Robert Fröhler <info@robert-froehler.de> 2.3.7
+
+* Sat Oct 31 2020 Robert Fröhler <info@robert-froehler.de> 2.3.7
+-Zugriff auf Lastprofile Auspraegung34 durch z.B. HMF34 als Typ
+
+* Tue Aug 18 2020 Robert Fröhler <info@robert-froehler.de> 2.3.6
+- 20.4
+
+* Tue Aug 18 2020 Robert Fröhler <info@robert-froehler.de> 2.3.6
+
+* Fri Apr 10 2020 Robert Fröhler <info@robert-froehler.de> 2.3.6
+
+* Tue Oct 01 2019 Robert Fröhler <info@robert-froehler.de> 2.3.6
+- bei ogr2ogr Umwandlung von shp in mif wird die prj Datei gelöscht.
+- im DWD Modul wurde die Adresse des Servers aktualisiert
+- alles Funktionsfähig mit neuem LP Verfahren SigLinDe
+- neu ist die FTP Funktion für den DWD
+- im Modul DWD wurde der Fehle abgefangen wenn Jahre im DWD weniger als 365 Tage haben
+- Default Werte bei Oeffnen Initialisieren
+- Referenzklima Deutschland als Default aus /opt/rfWärme/ kopiert
+- Erdreichtemperatur wird nun nach Dahlem berechnet (Temperaturabhaengiger Cos)
+- Erdreichtemp korrigiert (t in s)
+- Wirtschaftlichkeitsberechnung verbessert in der Eingabe (reduziertes Menü)
+- rfRohre Datei kann nun gewaehlt werden aus vier Moeglichkeiten
+- Episcope Kundenwert Klimadatei hat die Pruefziffer 4 nun an 3. Stelle
+
+* Wed Sep 18 2019 Robert Fröhler <info@robert-froehler.de> 2.3.5
+
+* Wed Sep 18 2019 Robert Fröhler <info@robert-froehler.de> 2.3.5
+- Erstes Release
+

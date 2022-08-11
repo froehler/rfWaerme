@@ -1,0 +1,25 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(50.75,0,50,78.625)
+  Background = &HD9DADB&
+  { btnOK Button
+    MoveScaled(1,73,8,4.875)
+    Text = ("OK")
+  }
+  { gdvDWDload GridView
+    MoveScaled(1,5,48,66)
+    Mode = Select.Single
+    Header = GridView.Horizontal
+  }
+  { Label8 Label
+    MoveScaled(1,1,46,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Stationen des Deutschen Wetterdienstes")
+  }
+  { FtpClient1 #FtpClient
+    #MoveScaled(43,72)
+  }
+}

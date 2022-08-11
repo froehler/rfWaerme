@@ -1,0 +1,24 @@
+# Gambas Project File 3.0
+Title=rfWärme 2.50
+Startup=FMain
+Icon=Grafik1.png
+Version=2.5.0
+Component=gb.image
+Component=gb.gtk
+Component=gb.form
+Component=gb.net
+Component=gb.net.curl
+Description="Software zur Simulation von Nahwärmenetzen"
+Authors="Asc.Prof.(FH) Dipl.-Ing. (FH) Robert Fröhler M.Eng."
+TabSize=2
+Language=de
+Maintainer=Robert Fröhler
+Address=info@robert-froehler.de
+License=General Public License V3
+PackageName=rfwaerme-2.5.0
+PackageVersion=2
+Packager=1
+Systems=ubuntu
+Menus=ubuntu:"Applications/Science/Engineering"
+Categories=ubuntu:"Engineering;Science"
+Groups=ubuntu:"editors"

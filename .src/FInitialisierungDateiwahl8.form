@@ -1,0 +1,22 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(50.7143,0,50,78.5714)
+  Background = &HD9DADB&
+  Resizable = False
+  { btnOK Button 
+    MoveScaled(1,73,8,4.8571)
+    Text = ("OK")
+  }
+  { gdvKlima GridView 
+    MoveScaled(1,5,48,66)
+    Mode = Select.Single
+    Header = GridView.Horizontal
+  }
+  { Label8 Label 
+    MoveScaled(1,1,24,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Klimajahr")
+  }
+}

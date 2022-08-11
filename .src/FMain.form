@@ -1,0 +1,86 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { mnuFile Menu
+    Text = ("Datei")
+    { mnuNew Menu
+      Text = ("Neu")
+    }
+    { mnuOpen Menu
+      Text = ("Öffnen")
+    }
+    { mnuSave Menu
+      Text = ("Speichern")
+    }
+  }
+  { fiVMain FileView
+    MoveScaled(1,11,48,35)
+    ShowDetailed = True
+  }
+  { picTitel PictureBox
+    MoveScaled(1,11,48,35)
+    Background = &HD9DADB&
+    Picture = Picture.Load("Titel2.png")
+    Stretch = True
+  }
+  { txbHautppfad CheckBox
+    MoveScaled(1,6,47,4)
+  }
+  { btnInitialisieren Button
+    MoveScaled(1,48,16,4.875)
+    Enabled = False
+    Text = ("Initialisieren")
+  }
+  { btnDimensionieren Button
+    MoveScaled(1,54,16,4.875)
+    Enabled = False
+    Text = ("Dimensionieren")
+  }
+  { btnBerechnung Button
+    MoveScaled(1,60,16,4.875)
+    Enabled = False
+    Text = ("Berechnung")
+  }
+  { btnSimulation Button
+    MoveScaled(1,66,16,4.875)
+    Enabled = False
+    Text = ("Simulation")
+  }
+  { btnQGIS Button
+    MoveScaled(33,48,16,4.875)
+    Text = ("QGIS")
+  }
+  { btnQML Button
+    MoveScaled(33,54,16,4.875)
+    Text = ("QGIS Legende")
+  }
+  { btnLizenz Button
+    MoveScaled(33,60,16,4.875)
+    Text = ("Lizenzierung")
+  }
+  { btnExit Button
+    MoveScaled(33,66,16,4.875)
+    Text = ("Exit")
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(10,72,39,3)
+    Enabled = False
+    Font = Font["-2"]
+    Text = ("Copyright © 2022 Dipl.-Ing. (FH) Robert Fröhler M.Eng.")
+    Alignment = Align.TopRight
+  }
+  { Label8 Label
+    MoveScaled(1,1,24,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Hauptmenü")
+  }
+  { chkInit CheckBox
+    MoveScaled(1,71,8,4)
+    Text = ("Init")
+  }
+}

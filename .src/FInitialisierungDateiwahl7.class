@@ -1,0 +1,31 @@
+' Gambas class file
+
+Public Sub Form_open()
+  ficKlimadatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficKlimadatei.Filter = ["*.txt;*.TXT", "DWD Textdateien"]
+  ficKlimadatei.FilterIndex = 0
+End
+
+
+Public Sub btnOK_Click()
+  If ficKlimadatei.value <> "" Then
+    Global.strPfadKlimadateiDWDKW = ficKlimadatei.Value
+    Programmcode.leseDWDKW()
+    FInitialisierungDateiwahl7.Close
+    FInitialisierungDateiwahl8.Show
+  Endif
+End
+
+Public Sub btnExit_Click()
+  Global.strPfadKlimadateiDWDKW = ficKlimadatei.value
+  FInitialisierungDateiwahl7.Close
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End
+
+Public Sub Form_Close()
+  Global.strPfadKlimadateiDWD = ficKlimadatei.value
+  FInitialisierungDateiwahl7.Close
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End

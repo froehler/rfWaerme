@@ -1,0 +1,40 @@
+' Gambas class file
+
+
+Public Sub Form_Open()
+  Ergebnisdarstellung()
+End
+
+Public Sub Form_Close()
+  FInitialisierung.Show
+End
+
+
+Public Sub Ergebnisdarstellung()
+Dim i As Integer
+    
+   gdvKlima.Columns.count = 2
+   gdvKlima.Columns[0].Title = "Jahr"
+   gdvKlima.Columns[0].Width = 100
+   gdvKlima.Columns[1].Title = "Heizgradtage [Kd/a]"
+   gdvKlima.Columns[1].Width = 230
+   gdvKlima.Rows.count = Global.intKlimadatenJahre
+   
+   For i = 0 To Global.intKlimadatenJahre - 1
+    gdvKlima[i, 0].text = CStr(Global.fltTagesMittelTemperatur[3, i, 1] * 100 + Global.fltTagesMittelTemperatur[4, i, 1])
+    gdvKlima[i, 1].text = CStr(Global.fltTagesMittelTemperatur[5, i, 0])
+   Next
+  
+End
+
+
+
+Public Sub btnOK_Click()
+  Global.intKlimadatenAuswahlJahr = gdvKlima.row
+  Global.fltGradtagszahl = CFloat(gdvKlima[gdvKlima.row, 1].text)
+  Programmcode.schreibeDWD()
+  FInitialisierungDateiwahl2.Close
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+  FInitialisierung.Form_open
+End

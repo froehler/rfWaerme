@@ -1,0 +1,43 @@
+' Gambas class file
+
+Public Sub Form_open()
+  ficEinspeiserdatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficEinspeiserdatei.Filter = ["*.shp;*.SHP;*.mif;*.MIF", "shape/mapinfo Datei"]
+  ficEinspeiserdatei.FilterIndex = 0
+End
+
+Public Sub btnOK_Click()
+  Dim strOrdner As String
+  Dim booOK As Boolean
+  booOK = False
+  If ficEinspeiserdatei.value <> "" Then
+    Global.strPfadEinspeiserdatei = ficEinspeiserdatei.Value
+    strOrdner = ficEinspeiserdatei.Dir
+    If (Exist(Left$(Global.strPfadEinspeiserdatei, -3) & "prj")) Then
+      Shell "rm " & Left$(Global.strPfadEinspeiserdatei, -3) & "prj"
+    Endif
+    If Right$(Global.strPfadEinspeiserdatei, 3) = "shp" Or Right$(Global.strPfadEinspeiserdatei, 3) = "SHP" Then
+      Shell "ogr2ogr " & strOrdner & " -f " & Chr(34) & "MapInfo File" & Chr(34) & " -dsco FORMAT=MIF " & Global.strPfadEinspeiserdatei Wait
+      Global.strPfadEinspeiserdatei = Left$(Global.strPfadEinspeiserdatei, -3) & "mif"
+      booOK = True
+    Endif
+    If Right$(Global.strPfadEinspeiserdatei, 3) = "mif" Or Right$(Global.strPfadEinspeiserdatei, 3) = "MIF" Then
+      booOk = True
+    Endif
+    
+    If booOk Then
+      Programmcode.Erzeuge_Einspeiser()
+      FInitialisierungDateiwahl5.CLOSE
+      FInitialisierung.Show
+      FInitialisierung.Enabled = True
+      FInitialisierung.Form_open
+    Endif
+  Endif
+End
+
+Public Sub btnExit_Click()
+  Global.strPfadEinspeiserdatei = ficEinspeiserdatei.value
+  FInitialisierungDateiwahl5.CLOSE
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End

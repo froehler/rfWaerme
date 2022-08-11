@@ -1,0 +1,164 @@
+' Gambas class file
+
+Public Sub Form_Open()
+ 
+  txbHautppfad.Text = Global.conDateiHauptpfad
+  Global.strtxbPfad = txbHautppfad.Text
+    fiVMain.Dir = Left$(Global.strtxbPfad, -1)
+  Global.booMehrleiter = False
+  Global.booInitialisierung_show = False
+  Global.booDimensionierung_show = False
+  Global.booDimensionierung = False
+  mnuSave.Enabled = False
+End
+
+
+Public Sub Anzeige()
+  txbHautppfad.Text = Global.strtxbPfad
+  fiVMain.Dir = Left$(Global.strtxbPfad, -1)
+End
+
+
+Public Sub Form_Activate()
+  
+  Anzeige()
+    
+  If Global.booInitialisierung_show Then
+    btnInitialisieren.Enabled = True
+  Else
+    btnInitialisieren.Enabled = False
+  Endif
+
+  If Global.booDimensionierung_show Then
+    btnDimensionieren.Enabled = True
+  Else
+    btnDimensionieren.Enabled = False
+  Endif
+  
+  If Global.booBerechnung_show Then
+    btnBerechnung.Enabled = True
+  Else
+    btnBerechnung.Enabled = False
+  Endif
+  
+  If Global.booSimulation_show Then
+    btnSimulation.Enabled = True
+  Else
+    btnSimulation.Enabled = False
+  Endif
+  
+  If Global.booInitialisierung And Global.booDimensionierung Then
+    Global.booBerechnungsFreigabe = True
+    chkInit.Value = False
+  Endif
+End
+
+
+Public Sub btnInitialisieren_Click()
+  FMain.Hide
+  FInitialisierung.Show
+End
+
+
+Public Sub btnDimensionieren_Click()
+  If Global.booInitialisierung Then
+    FMain.Hide
+    FDimensionierung.Show
+  Endif
+End
+
+
+Public Sub btnBerechnung_Click()
+  If Global.booBerechnungsFreigabe Then
+    FMain.Hide
+    FBerechnung.Show
+  Endif
+End
+
+
+Public Sub btnErgebnis1_Click()
+  Programmcode.Ergebnisdarstellung()
+End
+
+
+Public Sub btnSimulation_Click()
+  If Global.booBerechnungsFreigabe Then
+    FMain.Hide
+    FSimulation.Show
+  Endif
+End
+
+
+
+
+Public Sub btnQGIS_Click()
+  Shell "qgis " & Global.strtxbPfad & "*.MIF" Wait
+End
+
+Public Sub txbHautppfad_Click()
+  If txbHautppfad.Value = True Then
+    picTitel.Visible = False
+  Else
+    picTitel.Visible = True
+  Endif
+End
+
+Public Sub btnQML_Click()
+  FMain.Enabled = False
+  FQml.Show
+End
+
+Public Sub btnExit_Click()
+  Me.Close
+End
+
+
+Public Sub btnLizenz_Click()
+  FMain.Enabled = False
+  FCopyright.Show
+End
+
+Public Sub btnTest_Click()
+FWirtschaftlichkeit.Show
+End
+
+Public Sub mnuNew_Click()
+  Global.intFMainDatei = 0
+  FMain.Enabled = False
+  FMainDateiwahl.Show
+  mnuSave.Enabled = True
+End
+
+Public Sub mnuOpen_Click()
+  Global.intFMainDatei = 1
+  FMain.Enabled = False
+  FMainDateiwahl.Show
+  mnuSave.Enabled = True
+  Form_Activate()
+End
+
+Public Sub mnuSave_Click()
+  Global.intFMainDatei = 2
+  FMain.Enabled = False
+  FMainDateiwahl.Show
+End
+
+Public Sub mnuSaveas_Click()
+  Global.intFMainDatei = 3
+  FMain.Enabled = False
+  FMainDateiwahl.Show
+End
+
+Public Sub chkInit_Click()
+  If chkInit.Value = True Then
+    Global.booInitialisierung_show = True
+    btnInitialisieren.Enabled = True
+  Else
+    If Global.booInitialisierung = True Then
+      Global.booInitialisierung_show = False
+      btnInitialisieren.Enabled = False
+    Endif
+  Endif
+  
+
+End

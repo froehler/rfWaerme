@@ -1,0 +1,191 @@
+' Gambas class file
+
+'KONSTANTEN
+Public Const conMaxDatensaetze As Integer = 10000   'wird später durch halbiert =>NUR GERADE ZAHLEN!!!!
+Public Const conMaxRohre As Integer = 12
+Public Const conROUND As Integer = 2 'Zeichengenauigkeit (2 = cm; 0.01 m)
+Public Const cp As Float = 4.19
+Public Const conSchritte As Integer = 10
+Public Const Version As String = "rfWärme 2.50"
+Public Const conHeizGrenzTemperatur As Integer = 15
+Public Const conHeizGrenzTemperaturTWW As Integer = 39
+Public Const k As Float = 0.05  'Rohrrauhigkeitskoeffizient
+
+Public Const conSpaltenTrasse As Integer = 40
+Public Const conSpaltenTrasseSimulationsErgebnis As Integer = 27
+Public Const conSpaltenPunkte As Integer = 40
+Public Const conSpaltenAbnehmer As Integer = 8
+
+Public Const conLaufzeitNetz As Integer = 40
+Public Const conProzentInstanthaltungNetz As Float = 0.01
+Public Const conProzentWartungNetz As Float = 0.00
+Public Const conProzentBedienungNetz As Float = 0.00
+
+Public Const conLaufzeitWS As Integer = 30
+Public Const conProzentInstanthaltungWS As Float = 0.02
+Public Const conProzentWartungWS As Float = 0.01
+Public Const conProzentBedienungWS As Float = 0.00
+
+Public Const conLaufzeitSPL As Integer = 20
+Public Const conProzentInstanthaltungSPL As Float = 0.01
+Public Const conProzentWartungSPL As Float = 0.015
+Public Const conProzentBedienungSPL As Float = 20
+Public Const conNAnlagen As Float = 3
+
+Public Const conSimulationKTempMin As Float = -40.0
+Public Const conSimulationKTempMax As Float = 35
+Public Const conMaxDateiZeilen As Float = 37
+
+Public Const conDateiHauptpfad As String = "/home/"
+Public Const conDateiQuellpfad As String = ".../Bibliothek/"
+Public Const conDateiNameBibRohre As String = "rfRohre"
+Public Const conDateiNamePunkte As String = "rfPunkte"
+Public Const conDateiNameNetzTrasse As String = "rfNetzTrasse"
+Public Const conDateiNameNetzTrasseSimulationsErgebnis As String = "rfNetzTrasse_Sim"
+Public Const conDateiNameAbnehmer As String = "rfAbnehmer"
+Public Const conDateiNameEinspeiser As String = "rfEinspeiser"
+Public Const conDateiNamePfadeStrecken As String = "rfPfadeStrecken"
+Public Const conDateiNamePfadePunkte As String = "rfPfadePunkte"
+Public Const conDateiNameKlimaTag As String = "rfKlimaTag"
+Public Const conDateiNameKlimaTagKW As String = "rfKlimaTagKW"
+Public Const conDateiNameSTEFaNKanten As String = "Kanten"
+Public Const conDateiNameSTEFaNErgebnis As String = "Ergebnis"
+Public Const conDateiNameLastprofil As String = "rfLastprofile_SigLinDe"
+Public Const conDateiNameErgebnis As String = "rfErgebnis"
+
+
+
+'Pfade
+Static Public strtxbPfad As String
+Static Public strtxbDatei As String
+Static Public strPfadKlimadateiDWD As String
+Static Public strPfadKlimadateiDWDKW As String
+Static Public strPfadTrassendatei As String
+Static Public strPfadAbnehmerdatei As String
+Static Public strPfadEinspeiserdatei As String
+Static Public strPfadMIFdatei As String
+
+'Daten
+Static Public booInitialisierung As Boolean
+Static Public booInitialisierung_show As Boolean
+Static Public booDimensionierung As Boolean
+Static Public booDimensionierung_show As Boolean
+Static Public booBerechnung_show As Boolean
+Static Public booSimulation_show As Boolean
+Static Public booBerechnungsFreigabe As Boolean
+Static Public booDateiEinspeiserMIF As Boolean
+Static Public booDateiEinspeiserMID As Boolean
+Static Public booDateiAbnehmerMIF As Boolean
+Static Public booDateiAbnehmerMID As Boolean
+Static Public booDateiNetztrasseMIF As Boolean
+Static Public booDateiNetztrasseMID As Boolean
+Static Public booDateiRohreCSV As Boolean
+Static Public booDateiLastprofileCSV As Boolean
+Static Public booDateiKlimaTagCSV As Boolean
+Static Public booDateiKlimaTagKWCSV As Boolean
+Static Public booPicDimensionierung As Boolean
+Static Public booMehrleiter As Boolean
+Static Public booSimulationZeit As Boolean
+Static Public booSimulationEingabe As Boolean
+Static Public booGLSPL As Boolean
+
+Static Public intMLNetzBetrieb As Integer
+Static Public intSchritte As Integer
+Static Public intDaemmklasse As Integer
+Static Public intAbnehmerQ As Integer
+Static Public intAbnehmerTyp As Integer
+Static Public intZeilenNetzTrasse As Integer
+Static Public intZeilenPunkte As Integer
+Static Public intZeilenNetzTrasseMIF As Integer
+Static Public intNetzTrasseSpaltenzahl As Integer
+Static Public intEinspeisepunkt As Integer
+Static Public intZeilenTrassenWegPunkte As New Integer[conMaxDatensaetze]
+Static Public intZeilenTrassenWegStrecken As New Integer[conMaxDatensaetze]
+Static Public intSpaltenTrassenWeg As Integer
+Static Public intFMainDatei As Integer
+Static Public intKlimadatenJahre As Integer
+Static Public intKlimadatenJahreKW As Integer
+Static Public intKlimadatenAuswahlJahr As Integer
+Static Public intKlimadatenAuswahlJahrKW As Integer
+Static Public intStunde As Integer
+
+Static Public fltTagesMittelTemperatur As New Float[6, 300, 367]  'Jahr , Tagesmittelwert (erster Wert Schaltjahr (1 / 0))
+Static Public fltTagesMittelTemperaturKW As New Float[6, 300, 367]  'Jahr , Tagesmittelwert (erster Wert Schaltjahr (1 / 0))
+Static Public fltGradtagszahl As Float
+Static Public fltGradtagszahlKW As Float
+Static Public fltMLAnteilLeiter2 As Float
+Static Public fltVerlauf As Float
+Static Public fltAuslegungstemperatur As Float
+Static Public fltAuslegungsfaktor As Float
+Static Public fltAussentemperatur As Float
+Static Public fltVorlauftemperatur As Float
+Static Public fltGrenzVorlauftemperatur As Float
+Static Public fltGrenzRuecklauftemperatur As Float
+Static Public fltGrenzRuecklauftemperaturToleranz As Float
+Static Public fltUmgebungstemperatur As Float
+Static Public fltWirkungsgradPumpe As Float
+Static Public fltdeltaTHaus As Float
+Static Public fltMaxDP As Float
+Static Public fltDP As Float
+Static Public fltDP2a As Float
+Static Public fltDP2b As Float
+Static Public fltPWaermeOUT As Float
+Static Public fltPWaermeOUT2a As Float
+Static Public fltPWaermeOUT2b As Float
+Static Public fltPWaermeVERLUST As Float
+Static Public fltPWaermeVERLUST2a As Float
+Static Public fltPWaermeVERLUST2b As Float
+Static Public fltQIstQMax As Float
+Static Public fltZuschlagFormstuecke As Float
+Static Public fltWaermetauscherdP As Float
+Static Public fltAnschlussgrad As Float
+Static Public fltRohrLaengeKosten As New Float[3, conMaxRohre]
+Static Public fltRohrLaengeKosten_a As New Float[3, conMaxRohre]
+Static Public fltRohrLaengeKosten_b As New Float[3, conMaxRohre]
+Static Public fltTWWVL As Float
+Static Public fltTWWRL As Float
+Static Public fltTWWVLEIN As Float
+Static Public fltTWWdT As Float
+
+'fuer Simulation Vorlauf Ruecklauftemp
+Static Public fltSimVLTemp As New Float[8800]
+Static Public fltSimRLTemp As New Float[8800]
+
+Static Public fltLastprofileAuspraegung As New Float[14, 5, 8] '[Profil, Auspraegung, A B C D mH bH mW bW]
+Static Public fltLastprofileWTFaktor As New Float[14, 7] '[Profil, Wochentag]
+Static Public fltLastprofilehVerteilung As New Float[14, 7, 10, 24] '[Profil, Wochentag, Stütztemp, Stunde]
+
+'Wirtschaftlichkeit
+Static Public fltInvestNetz As Float
+Static Public fltInvestWS As Float
+Static Public fltInvestWS_SUMME As Float
+Static Public fltInvestSPL As Float
+Static Public fltZinssatzKapital As Float
+Static Public fltPreissteigerungAllg As Float
+Static Public fltStrompreis As Float
+Static Public fltEnergiepreisABW As Float
+Static Public fltPreissteigerungStrom As Float
+Static Public fltEnergiepreisSPL As Float
+Static Public fltPreissteigerungSPL As Float
+Static Public fltPreissteigerungLohn As Float
+Static Public fltZeitraum As Float
+Static Public fltVerkaufspreis As Float
+Static Public fltLeistungGL As Float
+Static Public fltAnnuitaet As New Float[4]
+Static Public fltQGL As Float
+Static Public fltQSPL As Float
+Static Public fltetaSPL As Float
+
+Static Public strTagStart As New String[3]
+Static Public strTagEnde As New String[3]
+Static Public strDatensatzPunkte As New String[conSpaltenPunkte, conMaxDatensaetze]
+Static Public strDatensatzNetzTrasse As New String[conSpaltenTrasse, conMaxDatensaetze]
+Static Public strDatensatzNetzTrasseSimulationsErgebnis As New String[conSpaltenTrasseSimulationsErgebnis, conMaxDatensaetze]
+Static Public strDatensatzNetzTrasseMIF As New String[conMaxDatensaetze * 3 + 5 + conSpaltenTrasse]
+Static Public strDatensatzRohre As New String[12, conMaxRohre]
+Static Public strDatensatzKlimaTag As New String[5, 367]
+Static Public strDatensatzKlimaTagKW As New String[5, 367]
+Static Public strDatensatzSimErgebnis As New String[50, 8790]
+Static Public strDatensatzTrassenWegStrecken As New String[conMaxDatensaetze, conMaxDatensaetze]
+Static Public strDatensatzTrassenWegPunkte As New String[conMaxDatensaetze, conMaxDatensaetze]
+Static Public strDatensatzDatei As New String[3, conMaxDateiZeilen]

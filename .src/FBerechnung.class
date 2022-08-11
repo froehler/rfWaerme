@@ -1,0 +1,232 @@
+' Gambas class file
+
+
+Public Sub Form_Open()
+  Programmcode.lese_Klima_Tag
+  Programmcode.lese_Klima_TagKW
+  If Global.booMehrleiter = True Then
+    chkMLNetz.value = True
+  Else
+    chkMLNetz.value = False
+  Endif
+  
+ 
+    txbTempVL.Text = CStr(Global.fltVorlauftemperatur)
+    sliTempVL.Value = Global.fltVorlauftemperatur
+ 
+
+    'txbTempUmgeb.Text = CStr(Global.fltUmgebungstemperatur)
+    'sliTempUmgeb.Value = Global.fltUmgebungstemperatur
+
+
+    txbminTempVLHaus.Text = CStr(Global.fltGrenzVorlauftemperatur)
+    sliminTempVLHaus.Value = Global.fltGrenzVorlauftemperatur
+
+
+    txbminTempHaus.Text = CStr(Global.fltGrenzRuecklauftemperatur)
+    sliminTempHaus.Value = Global.fltGrenzRuecklauftemperatur
+ 
+ 
+    txbminTempHausToleranz.Text = CStr(Global.fltGrenzRuecklauftemperaturToleranz)
+
+
+    txbSchritte.Text = CStr(Global.intSchritte)
+
+  If Global.intDaemmklasse > 0 Then
+    Select Case Global.intDaemmklasse
+      Case 1
+        rdbDmKl1.value = True
+      Case 2
+        rdbDmKl2.value = True
+      Case 3
+        rdbDmKl3.value = True
+    End Select
+  Endif
+  
+  
+    txbWTdP.Text = CStr(Global.fltWaermetauscherdP)
+    
+  
+    txbZfdP.Text = CStr(Global.fltZuschlagFormstuecke * 100)
+    sliZfdP.Value = Global.fltZuschlagFormstuecke * 100
+   
+  
+    txbEtaPumpe.Text = CStr(Global.fltWirkungsgradPumpe * 100)
+    sliEtaPumpe.Value = Global.fltWirkungsgradPumpe * 100
+ 
+    lblStunde.Text = CStr(Global.fltAussentemperatur)
+    sliStunde.Value = Global.fltAussentemperatur
+    
+End
+
+Public Sub Form_Close()
+  FBerechnung.Close
+  FBerErgebnisse.Close
+  FMain.Show
+End
+
+
+Public Sub btnStart_Click()
+  Global.fltVorlauftemperatur = CFloat(txbTempVL.Text)
+  Global.fltUmgebungstemperatur = CFloat(Programmcode.funErdreichtemp(CInt(lblStunde.Text)))
+  Global.fltdeltaTHaus = CFloat(txbTempVL.Text) - CFloat(txbminTempHaus.Text) + 10
+  Global.intDaemmklasse = CFloat(txbDmKl.Text)
+  Global.fltZuschlagFormstuecke = CFloat(txbZfdP.Text) / 100
+  Global.fltWaermetauscherdP = CFloat(txbWTdP.Text)
+  Global.fltGrenzRuecklauftemperatur = CFloat(txbminTempHaus.Text)
+  Global.fltGrenzVorlauftemperatur = CFloat(txbminTempVLHaus.Text)
+  Global.fltGrenzRuecklauftemperaturToleranz = CFloat(txbminTempHausToleranz.Text)
+  Global.intSchritte = CFloat(txbSchritte.Text)
+  Global.fltWirkungsgradPumpe = CFloat(txbEtaPumpe.Text) / 100
+  Global.fltAussentemperatur = CFloat(global.strDatensatzKlimaTag[0, Int((CInt(lblStunde.Text) - 1) / 24) + 1])
+  Global.intStunde = CInt(lblStunde.Text)
+  Programmcode.lese_Lastprofile(Global.strtxbPfad & Global.conDateiNameLastprofil & ".csv")
+  Programmcode.berechne_KW()
+  Programmcode.lese_Daten_fuer_Simulation()
+  Programmcode.Berechnung_iterativ()
+  FBerErgebnisse.Show
+End
+
+
+Public Sub btnExit_Click()
+  FBerErgebnisse.close
+  FBerechnung.close
+  FMain.Show
+End
+
+
+
+Public Sub sliTempVL_Change()
+  txbTempVL.Text = sliTempVL.Value
+End
+
+Public Sub txbTempVL_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliTempVL.Value
+  sliTempVL.Value = CFloat(txbTempVL.Text)
+  Catch
+    sliTempVL.Value = fltcatch
+    txbTempVL.Text = CStr(fltcatch)
+End
+
+
+'Public Sub sliTempUmgeb_Change()
+'  txbTempUmgeb.Text = sliTempUmgeb.Value
+'End
+
+'Public Sub txbTempUmgeb_LostFocus()
+'  Dim fltcatch As Float
+'  fltcatch = sliTempUmgeb.Value
+'  sliTempUmgeb.Value = CFloat(txbTempUmgeb.Text)
+'  Catch
+'    sliTempUmgeb.Value = fltcatch
+'    txbTempUmgeb.Text = CStr(fltcatch)
+'End
+
+
+Public Sub sliminTempVLHaus_Change()
+  txbminTempVLHaus.Text = sliminTempVLHaus.Value
+End
+
+Public Sub txbminTempVLHaus_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliminTempVLHaus.Value
+  sliminTempVLHaus.Value = CFloat(txbminTempVLHaus.Text)
+  Catch
+    sliminTempVLHaus.Value = fltcatch
+    txbminTempVLHaus.Text = CStr(fltcatch)
+End
+
+
+Public Sub sliminTempHaus_Change()
+  txbminTempHaus.Text = sliminTempHaus.Value
+End
+
+Public Sub txbminTempHaus_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliminTempHaus.Value
+  sliminTempHaus.Value = CFloat(txbminTempHaus.Text)
+  Catch
+    sliminTempHaus.Value = fltcatch
+    txbminTempHaus.Text = CStr(fltcatch)
+End
+
+
+Public Sub txbminTempHausToleranz_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = CFloat(txbminTempHausToleranz.Text)
+  If fltcatch < 0 Then txbminTempHausToleranz.Text = "1"
+  Catch
+    txbminTempHausToleranz.Text = "1"
+End
+
+
+Public Sub txbSchritte_LostFocus()
+  Dim intcatch As Integer
+  intcatch = Round(CFloat(txbSchritte.Text), 0)
+  If intcatch < 1 Then txbSchritte.Text = "2"
+  txbSchritte.Text = CStr(intcatch)
+  Catch
+    txbSchritte.Text = "2"
+End
+
+
+Public Sub rdbDmKl_Click()
+  If rdbDmKl1.Value Then txbDmKl.text = "1"
+  If rdbDmKl2.Value Then txbDmKl.text = "2"
+  If rdbDmKl3.Value Then txbDmKl.text = "3"
+End
+
+
+Public Sub txbWTdP_LostFocus()
+  Dim fltcatch As Integer
+  fltcatch = CFloat(txbWTdP.Text)
+  If fltcatch < 0 Then txbWTdP.Text = "0.5"
+  'txbWTdP.Text = CStr(fltcatch)
+  Catch
+    txbWTdP.Text = "0.5"
+End
+
+
+Public Sub sliZfdP_Change()
+  txbZfdP.Text = sliZfdP.Value
+End
+
+Public Sub txbZfdP_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliZfdP.Value
+  sliZfdP.Value = CFloat(txbZfdP.Text)
+  Catch
+    sliZfdP.Value = fltcatch
+    txbZfdP.Text = CStr(fltcatch)
+End
+
+
+Public Sub sliEtaPumpe_Change()
+  txbEtaPumpe.Text = sliEtaPumpe.Value
+End
+
+Public Sub txbEtaPumpe_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliEtaPumpe.Value
+  sliEtaPumpe.Value = CFloat(txbEtaPumpe.Text)
+  Catch
+    sliEtaPumpe.Value = fltcatch
+    txbEtaPumpe.Text = CStr(fltcatch)
+End
+
+Public Sub sliStunde_Change()
+  lblStunde.Text = sliStunde.Value
+  lblTempErdreich.Text = CStr(Round(Programmcode.funErdreichtemp(CInt(lblStunde.Text)), -1))
+  lblAussentemperatur.Text = CStr(Round(CFloat(global.strDatensatzKlimaTag[0, Int((CInt(lblStunde.Text) - 1) / 24) + 1]), -1))
+End
+
+Public Sub lblStunde_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliStunde.Value
+  sliStunde.Value = CFloat(lblStunde.Text)
+  Catch
+    sliStunde.Value = fltcatch
+    lblStunde.Text = CStr(fltcatch)
+End
+

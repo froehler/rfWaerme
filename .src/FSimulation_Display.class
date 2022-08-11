@@ -1,0 +1,66 @@
+' Gambas class file
+
+Public Sub Form_Open()
+Dim datum0, datum1, datum2 As Date
+  Datum0 = Date(CInt(Global.strTagStart[2]), 1, 1, 0, 0, 0)
+  Datum1 = Date(CInt(Global.strTagStart[2]), CInt(Global.strTagStart[1]), CInt(Global.strTagStart[0]), 0, 0, 0)
+  Datum2 = Date(CInt(Global.strTagEnde[2]), CInt(Global.strTagEnde[1]), CInt(Global.strTagEnde[0]), 23, 0, 0)
+
+  txbStart.text = DateDiff(Datum0, Datum1, gb.Hour)
+  txbEnde.text = DateDiff(Datum0, Datum2, gb.Hour)
+End
+
+
+
+Public Sub btnExit_Click()
+  FSimulation_Display.Close
+  FSimulation.Show
+  FSimulation.Enabled = True
+End
+
+Public Sub btnStart_Click()
+  Dim i, j As Integer
+    
+  FSimulation_Display.Enabled = False
+  Programmcode.lese_Lastprofile(Global.strtxbPfad & Global.conDateiNameLastprofil & ".csv")
+  Programmcode.berechne_KW()
+  Programmcode.lese_Daten_fuer_Simulation()
+  Programmcode.reset_NetzTrasseSimulationsergebnisErgebnis(Global.intZeilenNetzTrasse)
+  
+  For i = CInt(txbStart.text) To CInt(txbEnde.text)
+    For j = 0 To 50 - 1
+      Global.strDatensatzSimErgebnis[j, i] = "0"
+    Next
+    Programmcode.simuliere(i) '(Stunde)
+    txlTVL.text = CStr(Round(Global.strDatensatzSimErgebnis[1, i], -1))
+    txlTRL.text = CStr(Round(Global.strDatensatzSimErgebnis[2, i], -1))
+    txlPzu.text = CStr(Round(Global.strDatensatzSimErgebnis[22, i], 0))
+    txlPab.text = CStr(Round(Global.strDatensatzSimErgebnis[23, i], 0))
+    txlPweg.text = CStr(Round(Global.strDatensatzSimErgebnis[24, i], 0))
+    txlTLuft.text = CStr(Round(Global.strDatensatzKlimaTag[0, Int(i / 24) + 1], 0))
+    txlTErde.text = CStr(Round(Global.fltUmgebungstemperatur, 0))
+    prbSimulation.value = (i - CInt(txbStart.text)) / (CInt(txbEnde.text) - CInt(txbStart.text))
+    Global.fltSimVLTemp[i] = Global.strDatensatzSimErgebnis[1, i]
+    Global.fltSimRLTemp[i] = Global.strDatensatzSimErgebnis[2, i]
+    Wait 0.01
+  Next
+  
+  'Schreibe Ergebnisdatei  
+  Programmcode.schreibe_Daten_von_Simulation(txbDatei.text, CInt(txbStart.text), CInt(txbEnde.text))
+  Programmcode.schreibeSimTempCSV(CInt(txbStart.text), CInt(txbEnde.text))
+  FSimulation_Display.Enabled = True
+End
+
+
+
+Public Sub chkRoot_Click()
+  If chkRoot.Value = True Then
+    txbStart.Enabled = True
+    txbEnde.Enabled = True
+  Else
+    txbStart.Enabled = False
+    txbEnde.Enabled = False
+  Endif
+End
+
+

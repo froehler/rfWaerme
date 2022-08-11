@@ -1,0 +1,346 @@
+' Gambas class file
+
+Public Sub Form_open()
+Dim strDir, strFile As String
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim strElement As String        'Hier wird ein Element aus dem gesplitteten Variablenfeld abgelegt
+Dim strGesplittet As String[]   'Dieses Datenfeld nimmt die gesplittete Zeile auf
+Dim a, b, i, j As Integer
+
+  ficMaindatei.Dir = Replace$(Left$(Global.strtxbPfad, -1), Left$(Global.strtxbDatei, -4), "")
+  ficMaindatei.Filter = ["*.rfw", "rfWaermedatei"]
+  ficMaindatei.FilterIndex = 0
+  
+  'Datei speichern
+  If Global.intFMainDatei = 2 Then
+    'z.B. strDir = "/home/robert"
+      strDir = Replace$(Left$(Global.strtxbPfad, -1), Left$(Global.strtxbDatei, -4), "")
+      'z.B.strFile = "/neueDatei.rtw"
+      strFile = Global.strtxbDatei
+  
+      a = 0
+      b = 0
+
+      hsDatei = Open strDir & strFile For Input 'öffnen der Datei
+      While Not Eof(hsDatei)
+        Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+        strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+        For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+          Global.strDatensatzDatei[a, b] = Replace$(strElement, "\r", "")
+          a = a + 1   'nächste Spalte
+        Next    'nächstes Element in strGesplittet
+        a = 0   'die Spaltennummer wird zurückgesetzt
+        b = b + 1   'die Zeilennummer wird um 1 erhöht
+      Wend
+      Close #hsDatei  'schließe Datei
+      
+      Global.strDatensatzDatei[2, 0] = CStr(Global.booInitialisierung)
+      Global.strDatensatzDatei[2, 1] = CStr(Global.booInitialisierung_show)
+      Global.strDatensatzDatei[2, 2] = CStr(Global.booDimensionierung)
+      Global.strDatensatzDatei[2, 3] = CStr(Global.booBerechnungsFreigabe)
+      Global.strDatensatzDatei[2, 4] = CStr(Global.booMehrleiter)
+      Global.strDatensatzDatei[2, 5] = CStr(Global.booSimulationZeit)
+      Global.strDatensatzDatei[2, 6] = CStr(Global.booSimulationEingabe)
+      Global.strDatensatzDatei[2, 7] = CStr(Global.intSchritte)
+      Global.strDatensatzDatei[2, 8] = CStr(Global.intDaemmklasse)
+      Global.strDatensatzDatei[2, 9] = CStr(Global.intEinspeisepunkt)
+      Global.strDatensatzDatei[2, 10] = CStr(Global.fltAuslegungsfaktor)
+      Global.strDatensatzDatei[2, 11] = CStr(Global.fltAuslegungstemperatur)
+      Global.strDatensatzDatei[2, 12] = CStr(Global.fltAussentemperatur)
+      Global.strDatensatzDatei[2, 13] = CStr(Global.fltVorlauftemperatur)
+      Global.strDatensatzDatei[2, 14] = CStr(Global.fltGrenzVorlauftemperatur)
+      Global.strDatensatzDatei[2, 15] = CStr(Global.fltGrenzRuecklauftemperatur)
+      Global.strDatensatzDatei[2, 16] = CStr(Global.fltGrenzRuecklauftemperaturToleranz)
+      Global.strDatensatzDatei[2, 17] = CStr(Global.fltUmgebungstemperatur)
+      Global.strDatensatzDatei[2, 18] = CStr(Global.fltWirkungsgradPumpe)
+      Global.strDatensatzDatei[2, 19] = CStr(Global.fltdeltaTHaus)
+      Global.strDatensatzDatei[2, 20] = CStr(Global.fltMaxDP)
+      Global.strDatensatzDatei[2, 21] = CStr(Global.fltQIstQMax)
+      Global.strDatensatzDatei[2, 22] = CStr(Global.fltZuschlagFormstuecke)
+      Global.strDatensatzDatei[2, 23] = CStr(Global.fltWaermetauscherdP)
+      Global.strDatensatzDatei[2, 24] = CStr(Global.fltAnschlussgrad)
+      Global.strDatensatzDatei[2, 25] = Global.strTagStart[0]
+      Global.strDatensatzDatei[2, 26] = Global.strTagStart[1]
+      Global.strDatensatzDatei[2, 27] = Global.strTagStart[2]
+      Global.strDatensatzDatei[2, 28] = Global.strTagEnde[0]
+      Global.strDatensatzDatei[2, 29] = Global.strTagEnde[1]
+      Global.strDatensatzDatei[2, 30] = Global.strTagEnde[2]
+      Global.strDatensatzDatei[2, 31] = CStr(Global.booDimensionierung_show)
+      Global.strDatensatzDatei[2, 32] = CStr(Global.booBerechnung_show)
+      Global.strDatensatzDatei[2, 33] = CStr(Global.booSimulation_show)
+      Global.strDatensatzDatei[2, 34] = CStr(Global.fltMLAnteilLeiter2)
+      Global.strDatensatzDatei[2, 35] = CStr(Global.fltGradtagszahlKW)
+      Global.strDatensatzDatei[2, 36] = CStr(Global.fltGradtagszahl)
+  
+      'Schreibe Datei
+      hsDatei = Open strDir & strFile For Output Create     'Öffne die Datei zum Schreiben
+      hsDatei.EndOfLine = gb.Windows
+  
+      For i = 0 To Global.conMaxDateiZeilen - 1  'Schleife über die Bauteile
+        strZeile = ""
+        If Global.strDatensatzDatei[0, i] <> "" Then
+          For j = 0 To 1
+            strZeile &= Global.strDatensatzDatei[j, i] & Chr$(9)
+          Next
+          strZeile &= Global.strDatensatzDatei[2, i]
+          Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+        Endif
+      Next
+      Close #hsDatei   'Schließe die Datei
+      ficMaindatei.Value = strDir & strFile
+  Endif
+End
+
+
+
+
+Public Sub btnOK_Click()
+Dim strDir, strFile, strFolder As String
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim strElement As String        'Hier wird ein Element aus dem gesplitteten Variablenfeld abgelegt
+Dim strGesplittet As String[]   'Dieses Datenfeld nimmt die gesplittete Zeile auf
+Dim a, b, i As Integer
+  
+  Select Case Global.intFMainDatei
+  'Datei Neu
+  Case 0
+    If ficMaindatei.value <> "" And Programmcode.funTesteDatei(CStr(ficMaindatei.value)) = False Then
+      'z.B. strDir = "/home/robert"
+      strDir = CStr(ficMaindatei.Dir)
+      'z.B.strFile = "/neueDatei.rtw"
+      strFile = Replace$(CStr(ficMaindatei.Value), CStr(ficMaindatei.Dir), "")
+      'wenn keine Dateiendung vorhanden ist dann soll ".rtw" ergänzt werden
+      If Right$(strFile, 4) <> ".rfw" Then
+        strFile &= ".rfw"
+      Endif
+      'Ordnername entspricht der Datei ohne ".rtw" z.B. "/neueDatei"
+      strFolder = Replace$(strFile, ".rfw", "")
+      'Ordner anlegen
+      Mkdir strDir & strFolder
+      
+      'Datei anlegen       
+      'Schreibe Daten in Globale Variable
+      Global.strDatensatzDatei[0, 0] = "0"
+      Global.strDatensatzDatei[1, 0] = "booInitialisierung"
+      Global.strDatensatzDatei[2, 0] = ""
+      Global.strDatensatzDatei[0, 1] = "1"
+      Global.strDatensatzDatei[1, 1] = "booInitialisierung_show"
+      Global.strDatensatzDatei[2, 1] = "T"
+      Global.strDatensatzDatei[0, 2] = "2"
+      Global.strDatensatzDatei[1, 2] = "booDimensionierung"
+      Global.strDatensatzDatei[2, 2] = ""
+      Global.strDatensatzDatei[0, 3] = "3"
+      Global.strDatensatzDatei[1, 3] = "booBerechnungsFreigabe"
+      Global.strDatensatzDatei[2, 3] = ""
+      Global.strDatensatzDatei[0, 4] = "4"
+      Global.strDatensatzDatei[1, 4] = "booMehrleiter"
+      Global.strDatensatzDatei[2, 4] = ""
+      Global.strDatensatzDatei[0, 5] = "5"
+      Global.strDatensatzDatei[1, 5] = "booSimulationZeit"
+      Global.strDatensatzDatei[2, 5] = ""
+      Global.strDatensatzDatei[0, 6] = "6"
+      Global.strDatensatzDatei[1, 6] = "booSimulationEingabe"
+      Global.strDatensatzDatei[2, 6] = ""
+      Global.strDatensatzDatei[0, 7] = "7"
+      Global.strDatensatzDatei[1, 7] = "intSchritte"
+      Global.strDatensatzDatei[2, 7] = "2"
+      Global.strDatensatzDatei[0, 8] = "8"
+      Global.strDatensatzDatei[1, 8] = "intDaemmklasse"
+      Global.strDatensatzDatei[2, 8] = "1"
+      Global.strDatensatzDatei[0, 9] = "9"
+      Global.strDatensatzDatei[1, 9] = "intEinspeisepunkt"
+      Global.strDatensatzDatei[2, 9] = "0"
+      Global.strDatensatzDatei[0, 10] = "10"
+      Global.strDatensatzDatei[1, 10] = "fltAuslegungsfaktor"
+      Global.strDatensatzDatei[2, 10] = "100"
+      Global.strDatensatzDatei[0, 11] = "11"
+      Global.strDatensatzDatei[1, 11] = "fltAuslegungstemperatur"
+      Global.strDatensatzDatei[2, 11] = "-16"
+      Global.strDatensatzDatei[0, 12] = "12"
+      Global.strDatensatzDatei[1, 12] = "fltAussentemperatur"
+      Global.strDatensatzDatei[2, 12] = "-16"
+      Global.strDatensatzDatei[0, 13] = "13"
+      Global.strDatensatzDatei[1, 13] = "fltVorlauftemperatur"
+      Global.strDatensatzDatei[2, 13] = "90"
+      Global.strDatensatzDatei[0, 14] = "14"
+      Global.strDatensatzDatei[1, 14] = "fltGrenzVorlauftemperatur"
+      Global.strDatensatzDatei[2, 14] = "70"
+      Global.strDatensatzDatei[0, 15] = "15"
+      Global.strDatensatzDatei[1, 15] = "fltGrenzRuecklauftemperatur"
+      Global.strDatensatzDatei[2, 15] = "55"
+      Global.strDatensatzDatei[0, 16] = "16"
+      Global.strDatensatzDatei[1, 16] = "fltGrenzRuecklauftemperaturToleranz"
+      Global.strDatensatzDatei[2, 16] = "1"
+      Global.strDatensatzDatei[0, 17] = "17"
+      Global.strDatensatzDatei[1, 17] = "fltUmgebungstemperatur"
+      Global.strDatensatzDatei[2, 17] = "5"
+      Global.strDatensatzDatei[0, 18] = "18"
+      Global.strDatensatzDatei[1, 18] = "fltWirkungsgradPumpe"
+      Global.strDatensatzDatei[2, 18] = "0.6"
+      Global.strDatensatzDatei[0, 19] = "19"
+      Global.strDatensatzDatei[1, 19] = "fltdeltaTHaus"
+      Global.strDatensatzDatei[2, 19] = "30"
+      Global.strDatensatzDatei[0, 20] = "20"
+      Global.strDatensatzDatei[1, 20] = "fltMaxDP"
+      Global.strDatensatzDatei[2, 20] = "150"
+      Global.strDatensatzDatei[0, 21] = "21"
+      Global.strDatensatzDatei[1, 21] = "fltQIstQMax"
+      Global.strDatensatzDatei[2, 21] = "100"
+      Global.strDatensatzDatei[0, 22] = "22"
+      Global.strDatensatzDatei[1, 22] = "fltZuschlagFormstuecke"
+      Global.strDatensatzDatei[2, 22] = "0.3"
+      Global.strDatensatzDatei[0, 23] = "23"
+      Global.strDatensatzDatei[1, 23] = "fltWaermetauscherdP"
+      Global.strDatensatzDatei[2, 23] = "0.5"
+      Global.strDatensatzDatei[0, 24] = "24"
+      Global.strDatensatzDatei[1, 24] = "fltAnschlussgrad"
+      Global.strDatensatzDatei[2, 24] = "100"
+      Global.strDatensatzDatei[0, 25] = "25"
+      Global.strDatensatzDatei[1, 25] = "strTagStart_d"
+      Global.strDatensatzDatei[2, 25] = "1"
+      Global.strDatensatzDatei[0, 26] = "26"
+      Global.strDatensatzDatei[1, 26] = "strTagStart_m"
+      Global.strDatensatzDatei[2, 26] = "1"
+      Global.strDatensatzDatei[0, 27] = "27"
+      Global.strDatensatzDatei[1, 27] = "strTagStart_y"
+      Global.strDatensatzDatei[2, 27] = "2011"
+      Global.strDatensatzDatei[0, 28] = "28"
+      Global.strDatensatzDatei[1, 28] = "strTagEnde_d"
+      Global.strDatensatzDatei[2, 28] = "31"
+      Global.strDatensatzDatei[0, 29] = "29"
+      Global.strDatensatzDatei[1, 29] = "strTagEnde_m"
+      Global.strDatensatzDatei[2, 29] = "12"
+      Global.strDatensatzDatei[0, 30] = "30"
+      Global.strDatensatzDatei[1, 30] = "strTagEnde_y"
+      Global.strDatensatzDatei[2, 30] = "2011"
+      Global.strDatensatzDatei[0, 31] = "31"
+      Global.strDatensatzDatei[1, 31] = "booDimensionierung_show"
+      Global.strDatensatzDatei[2, 31] = ""
+      Global.strDatensatzDatei[0, 32] = "32"
+      Global.strDatensatzDatei[1, 32] = "booBerechnung_show"
+      Global.strDatensatzDatei[2, 32] = ""
+      Global.strDatensatzDatei[0, 33] = "33"
+      Global.strDatensatzDatei[1, 33] = "booSimulation_show"
+      Global.strDatensatzDatei[2, 33] = ""
+      Global.strDatensatzDatei[0, 34] = "34"
+      Global.strDatensatzDatei[1, 34] = "fltMLAnteilLeiter2"
+      Global.strDatensatzDatei[2, 34] = "20"
+      Global.strDatensatzDatei[0, 35] = "35"
+      Global.strDatensatzDatei[1, 35] = "fltGradttagszahlKW"
+      Global.strDatensatzDatei[2, 35] = "0"
+      Global.strDatensatzDatei[0, 36] = "36"
+      Global.strDatensatzDatei[1, 36] = "fltGradttagszahl"
+      Global.strDatensatzDatei[2, 36] = "0"
+      
+             
+      hsDatei = Open strDir & strFile For Output Create     'Öffne die Datei zum Schreiben
+      hsDatei.EndOfLine = gb.Windows
+      For i = 0 To Global.conMaxDateiZeilen - 1
+        strZeile = Global.strDatensatzDatei[0, i] & Chr$(9) & Global.strDatensatzDatei[1, i] & Chr$(9) & Global.strDatensatzDatei[2, i]
+        Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+      Next
+      Close #hsDatei   'Schließe die Datei
+      Copy Global.conDateiQuellpfad & "rfLastprofile_SigLinDe.csv" To strDir & strFolder & "/rfLastprofile_SigLinDe.csv"
+      Copy Global.conDateiQuellpfad & "rfKlimaTagKW.csv" To strDir & strFolder & "/rfKlimaTagKW.csv" 'copy rfKlimaTagKW.csv
+      
+      Global.strtxbPfad = strDir & strFolder & "/"
+      Global.strtxbDatei = Right$(strFile, -1)
+      Global.booInitialisierung_show = True
+      FMainDateiwahl.CLOSE
+      FMain.Enabled = True
+      FMain.SetFocus
+    Endif
+  
+  'Datei Öffnen  
+  Case 1
+    If ficMaindatei.value <> "" Then
+      'z.B. strDir = "/home/robert"
+      strDir = CStr(ficMaindatei.Dir)
+      'z.B.strFile = "/neueDatei.rtw"
+      strFile = Replace$(CStr(ficMaindatei.Value), CStr(ficMaindatei.Dir), "")
+      'wenn keine Dateiendung vorhanden ist dann soll ".rtw" ergänzt werden
+      If Right$(strFile, 4) <> ".rfw" Then
+        strFile &= ".rfw"
+      Endif
+      'Ordnername entspricht der Datei ohne ".rtw" z.B. "/neueDatei"
+      strFolder = Replace$(strFile, ".rfw", "")
+      
+      a = 0
+      b = 0
+      hsDatei = Open strDir & strFile For Input 'öffnen der Datei
+      While Not Eof(hsDatei)
+        Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+        strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+        For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+          Global.strDatensatzDatei[a, b] = Replace$(strElement, "\r", "")
+          a = a + 1   'nächste Spalte
+        Next    'nächstes Element in strGesplittet
+        a = 0   'die Spaltennummer wird zurückgesetzt
+        b = b + 1   'die Zeilennummer wird um 1 erhöht
+      Wend
+      Close #hsDatei  'schließe Datei
+      
+      Global.booInitialisierung = CBool(Global.strDatensatzDatei[2, 0])
+      Global.booInitialisierung_show = CBool(Global.strDatensatzDatei[2, 1])
+      Global.booDimensionierung = CBool(Global.strDatensatzDatei[2, 2])
+      Global.booBerechnungsFreigabe = CBool(Global.strDatensatzDatei[2, 3])
+      Global.booMehrleiter = CBool(Global.strDatensatzDatei[2, 4])
+      Global.booSimulationZeit = CBool(Global.strDatensatzDatei[2, 5])
+      Global.booSimulationEingabe = CBool(Global.strDatensatzDatei[2, 6])
+      Global.intSchritte = CInt(Global.strDatensatzDatei[2, 7])
+      Global.intDaemmklasse = CInt(Global.strDatensatzDatei[2, 8])
+      Global.intEinspeisepunkt = CInt(Global.strDatensatzDatei[2, 9])
+      Global.fltAuslegungsfaktor = CFloat(Global.strDatensatzDatei[2, 10])
+      Global.fltAuslegungstemperatur = CFloat(Global.strDatensatzDatei[2, 11])
+      Global.fltAussentemperatur = CFloat(Global.strDatensatzDatei[2, 12])
+      Global.fltVorlauftemperatur = CFloat(Global.strDatensatzDatei[2, 13])
+      Global.fltGrenzVorlauftemperatur = CFloat(Global.strDatensatzDatei[2, 14])
+      Global.fltGrenzRuecklauftemperatur = CFloat(Global.strDatensatzDatei[2, 15])
+      Global.fltGrenzRuecklauftemperaturToleranz = CFloat(Global.strDatensatzDatei[2, 16])
+      Global.fltUmgebungstemperatur = CFloat(Global.strDatensatzDatei[2, 17])
+      Global.fltWirkungsgradPumpe = CFloat(Global.strDatensatzDatei[2, 18])
+      Global.fltdeltaTHaus = CFloat(Global.strDatensatzDatei[2, 19])
+      Global.fltMaxDP = CFloat(Global.strDatensatzDatei[2, 20])
+      Global.fltQIstQMax = CFloat(Global.strDatensatzDatei[2, 21])
+      Global.fltZuschlagFormstuecke = CFloat(Global.strDatensatzDatei[2, 22])
+      Global.fltWaermetauscherdP = CFloat(Global.strDatensatzDatei[2, 23])
+      Global.fltAnschlussgrad = CFloat(Global.strDatensatzDatei[2, 24])
+      Global.strTagStart[0] = Global.strDatensatzDatei[2, 25]
+      Global.strTagStart[1] = Global.strDatensatzDatei[2, 26]
+      Global.strTagStart[2] = Global.strDatensatzDatei[2, 27]
+      Global.strTagEnde[0] = Global.strDatensatzDatei[2, 28]
+      Global.strTagEnde[1] = Global.strDatensatzDatei[2, 29]
+      Global.strTagEnde[2] = Global.strDatensatzDatei[2, 30]
+      Global.booDimensionierung_show = CBool(Global.strDatensatzDatei[2, 31])
+      Global.booBerechnung_show = CBool(Global.strDatensatzDatei[2, 32])
+      Global.booSimulation_show = CBool(Global.strDatensatzDatei[2, 33])
+      Global.fltMLAnteilLeiter2 = CFloat(Global.strDatensatzDatei[2, 34])
+      Global.fltGradtagszahlKW = CFloat(Global.strDatensatzDatei[2, 35])
+      Global.fltGradtagszahl = CFloat(Global.strDatensatzDatei[2, 36])
+      
+      Global.strtxbPfad = strDir & strFolder & "/"
+      Global.strtxbDatei = Right$(strFile, -1)
+      FMainDateiwahl.CLOSE
+      FMain.Enabled = True
+      FMain.SetFocus
+    Endif
+    
+  'Datei Speichern  
+  Case 2
+      FMainDateiwahl.CLOSE
+      FMain.Enabled = True
+      FMain.SetFocus
+
+  End Select
+
+End
+
+Public Sub btnExit_Click()
+    FMainDateiwahl.CLOSE
+    FMain.Enabled = True
+    FMain.SetFocus
+End
+
+

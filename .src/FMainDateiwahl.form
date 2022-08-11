@@ -1,0 +1,24 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(50.7143,0,78.5714,50)
+  Background = &HD9DADB&
+  Resizable = False
+  { btnOK Button 
+    MoveScaled(1,44,8,4.8571)
+    Text = ("OK")
+  }
+  { btnExit Button 
+    MoveScaled(69,44,8,4.8571)
+    Text = ("Exit")
+  }
+  { ficMaindatei FileChooser 
+    MoveScaled(1,5,76,38)
+  }
+  { Label8 Label 
+    MoveScaled(1,1,50,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("rfWaerme Datei w\xC3\xA4hlen:")
+  }
+}

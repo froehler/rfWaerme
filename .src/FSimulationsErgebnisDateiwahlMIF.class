@@ -1,0 +1,160 @@
+' Gambas class file
+
+Public Sub Form_open()
+  ficErgebnisdatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficErgebnisdatei.Filter = ["*.MIF", "GIS-Layer"]
+  ficErgebnisdatei.FilterIndex = 0
+End
+
+Public Sub btnOK_Click()
+  Dim strDateipfad As String
+  Dim hsDatei As Stream
+  Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+  Dim strElement As String        'Hier wird ein Element aus dem gesplitteten Variablenfeld abgelegt
+  Dim strGesplittet As String[]   'Dieses Datenfeld nimmt die gesplittete Zeile auf
+  Dim strDatensatzNetzTrasseMID As New String[Global.conSpaltenTrasseSimulationsErgebnis, Global.conMaxDatensaetze]
+  Dim strDatensatzNetzTrasseMIF As New String[Global.conMaxDatensaetze * 3 + 5 + Global.conSpaltenTrasse]
+  Dim a, b, i, j, intZeilenMID, intZeilenMIF, intSpaltenMID As Integer
+  
+  Programmcode.reset_NetzTrasseSimulationsergebnisErgebnis(Global.conMaxDatensaetze)
+      
+  'Dateien Einlesen zuerst alle .MID
+  For Each strDateipfad In ficErgebnisdatei.SelectedPaths
+    'lese Datei----------------------------------------------------
+    a = 0
+    b = 0
+    hsDatei = Open Left(strDateipfad, -3) & "MID" For Input 'öffnen der jede ErgebnisDatei *.MID
+    While Not Eof(hsDatei)
+      Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+      strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+  
+      For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+        strDatensatzNetzTrasseMID[a, b] = Replace$(strElement, "\r", "")
+        a = a + 1   'nächste Spalte
+      Next    'nächstes Element in strGesplittet
+      intSpaltenMID = a
+      a = 0   'die Spaltennummer wird zurückgesetzt
+      b = b + 1   'die Zeilennummer wird um 1 erhöht
+    Wend
+    intZeilenMID = b
+    Close #hsDatei  'schließe Datei NetzTrasse.MID
+    'lese Datei ENDE------------------------------------------------------
+    
+    
+    
+    'Schleife zum Übertragen der strDatensatzErgebnisdateien in global.strDatensatzErgebnis[a,b]-----------------
+    For i = 0 To intZeilenMID - 1
+      For j = 0 To 3
+        Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i] = strDatensatzNetzTrasseMID[j, i]
+      Next
+      
+      'QTrAbsSum
+      Global.strDatensatzNetzTrasseSimulationsErgebnis[4, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[4, i]) + CFloat(strDatensatzNetzTrasseMID[4, i])))
+      'QVe
+      For j = 6 To 8
+        Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i]) + CFloat(strDatensatzNetzTrasseMID[j, i])))
+      Next
+      
+      'DU2a
+      Global.strDatensatzNetzTrasseSimulationsErgebnis[10, i] = strDatensatzNetzTrasseMID[10, i]
+      'QTrAbsSum2a
+      Global.strDatensatzNetzTrasseSimulationsErgebnis[11, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[11, i]) + CFloat(strDatensatzNetzTrasseMID[11, i])))
+      'QVe2a
+      For j = 13 To 15
+        Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i]) + CFloat(strDatensatzNetzTrasseMID[j, i])))
+      Next
+      
+      'DU2b
+      Global.strDatensatzNetzTrasseSimulationsErgebnis[17, i] = strDatensatzNetzTrasseMID[17, i]
+      'QTrAbsSum2b
+      Global.strDatensatzNetzTrasseSimulationsErgebnis[18, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[18, i]) + CFloat(strDatensatzNetzTrasseMID[18, i])))
+      'QVe2b
+      For j = 20 To 22
+        Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i]) + CFloat(strDatensatzNetzTrasseMID[j, i])))
+      Next
+    Next
+  Next
+  
+  For i = 0 To intZeilenMID - 1
+    'QTrSpeSum
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[5, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[4, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i])))
+    'QVeSpeSum
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[9, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[6, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i])))
+    
+    'QTrSpeSum2a
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[12, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[11, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i])))
+    'QVeSpeSum2a
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[16, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[13, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i])))
+    
+    'QTrSpeSum
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[19, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[18, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i])))
+    'QVeSpeSum
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[23, i] = CStr(Round(CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[20, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[2, i])))
+  
+    'QVeProzent
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[4, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[24, i] = CStr(Round(100 * CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[6, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[4, i]), -1))
+    
+    'QVeProzent2a
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[11, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[25, i] = CStr(Round(100 * CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[13, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[11, i]) - 1))
+    
+    'QVeProzent2b
+    If CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[18, i]) > 0 Then Global.strDatensatzNetzTrasseSimulationsErgebnis[26, i] = CStr(Round(100 * CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[20, i]) / CFloat(Global.strDatensatzNetzTrasseSimulationsErgebnis[18, i]) - 1))
+  Next
+  
+  
+  
+  'Dateien Einlesen dann alle .MIF
+  For Each strDateipfad In ficErgebnisdatei.SelectedPaths
+    'lese Datei----------------------------------------------------
+    b = 0
+    hsDatei = Open Left(strDateipfad, -3) & "MIF" For Input 'öffnen der jede ErgebnisDatei *.MID
+    While Not Eof(hsDatei)
+      Line Input #hsDatei, strElement    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+      strDatensatzNetzTrasseMIF[b] = Replace$(strElement, "\r", "")
+      b = b + 1   'die Zeilennummer wird um 1 erhöht
+    Wend
+    intZeilenMIF = b
+    Close #hsDatei  'schließe Datei NetzTrasse.MIF
+  Next
+ 
+ 
+  
+  'Schreibe Ergebnisdatei-------------------------------------------------------------------------------
+  'Schreibe Ergebnis.MID
+  hsDatei = Open Global.strtxbPfad & txtDateiOUT.Text & ".MID" For Output Create     'Öffne die Datei zum Schreiben Global.conDateiNameErgebnis
+  hsDatei.EndOfLine = gb.Windows
+  
+  For i = 0 To intZeilenMID - 1
+    strZeile = ""
+    For j = 0 To intSpaltenMID - 2
+      strZeile &= Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i] & Chr$(9)
+    Next
+    strZeile &= Global.strDatensatzNetzTrasseSimulationsErgebnis[j, i]
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  Close #hsDatei   'Schließe die Datei
+  
+  'Schreibe Ergebnis.MIF
+  hsDatei = Open Global.strtxbPfad & txtDateiOUT.Text & ".MIF" For Output Create     'Öffne die Datei zum Schreiben Global.conDateiNameErgebnis
+  hsDatei.EndOfLine = gb.Windows
+  
+  For i = 0 To intZeilenMIF - 1
+    strZeile = strDatensatzNetzTrasseMIF[i]
+    Print #hsDatei, Conv$(strZeile, "UTF-8", "ASCII")    'schreibe Zeile in Datei
+  Next
+  Close #hsDatei   'Schließe die Datei
+  'Schreibe Ergebnisdatei-ENDE------------------------------------------------------------------------------
+  
+ 
+  FSimulationsErgebnisDateiwahlMIF.CLOSE
+  FSimulation_Ausgabe.Show
+  FSimulation_Ausgabe.Enabled = True
+End
+
+Public Sub btnExit_Click()
+  'Global.strPfadEinspeiserdatei = ficEinspeiserdatei.value
+  FSimulationsErgebnisDateiwahlMIF.CLOSE
+  FSimulation_Ausgabe.Show
+  FSimulation_Ausgabe.Enabled = True
+End
+

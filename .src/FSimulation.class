@@ -1,0 +1,122 @@
+' Gambas class file
+
+Public Sub Form_Open()
+  Dim fltHeizGradTageKW As Float
+  Dim fltHeizGradTageSI As Float
+  Dim intTag As Integer
+  
+  Programmcode.lese_Klima_Tag
+  Programmcode.lese_Klima_TagKW
+  
+  'Berechnung Heizgradtage KW
+  fltHeizGradTageKW = 0
+  For intTag = 1 To CInt(Global.strDatensatzKlimaTagKW[0, 0])
+    If CFloat(Global.strDatensatzKlimaTagKW[0, intTag]) < Global.conHeizGrenzTemperatur Then
+      fltHeizGradTageKW += (Global.conHeizGrenzTemperatur - CFloat(Global.strDatensatzKlimaTagKW[0, intTag]))
+    Endif
+  Next
+  
+  'Berechnung Heizgradtage Sim
+  fltHeizGradTageSI = 0
+  For intTag = 1 To CInt(Global.strDatensatzKlimaTag[0, 0])
+    If CFloat(Global.strDatensatzKlimaTag[0, intTag]) < Global.conHeizGrenzTemperatur Then
+      fltHeizGradTageSI += (Global.conHeizGrenzTemperatur - CFloat(Global.strDatensatzKlimaTag[0, intTag]))
+    Endif
+  Next
+  
+  
+  txlSimJahr.text = Global.strTagStart[2]
+  txlGTZSim.text = CStr(Round(fltHeizGradTageSI, -1)) & " Kd"
+  
+  If CInt(Global.strDatensatzKlimaTagKW[4, 1]) < 10 Then
+    txlQuellJahr.text = Global.strDatensatzKlimaTagKW[3, 1] & "0" & Global.strDatensatzKlimaTagKW[4, 1]
+  Else
+    txlQuellJahr.text = Global.strDatensatzKlimaTagKW[3, 1] & Global.strDatensatzKlimaTagKW[4, 1]
+  Endif
+  txlGTZKW.text = CStr(Round(fltHeizGradTageKW, -1)) & " Kd"
+  
+  txlKlimaProzent.text = CStr(Round(100 * fltHeizGradTageSI / fltHeizGradTageKW)) & " %"
+End
+
+
+
+Public Sub Form_Activate()
+  Global.booSimulationZeit = True
+  Global.booSimulationEingabe = False
+    
+  
+  txlTempVL.text = CStr(Global.fltVorlauftemperatur) & " °C"
+  txlErdreichTemp.text = CStr(Global.fltUmgebungstemperatur) & " °C"
+  txlminVLHaus.text = CStr(Global.fltGrenzVorlauftemperatur) & " °C"
+  txlRLHaus.text = CStr(Global.fltGrenzRuecklauftemperatur) & " °C"
+  txlToleranz.text = CStr(Global.fltGrenzRuecklauftemperaturToleranz) & " K"
+  txlRechenschritte.text = CStr(Global.intSchritte)
+  txlDaemmklasse.text = CStr(Global.intDaemmklasse)
+  txldPWT.text = CStr(Global.fltWaermetauscherdP) & " bar"
+  txldPZuschlagFSt.text = CStr(Global.fltZuschlagFormstuecke * 100) & " %"
+  txlWirkgradPumpe.text = CStr(Global.fltWirkungsgradPumpe * 100) & " %"
+  txlAnschlussgrad.text = CStr(Global.fltAnschlussgrad) & " %"
+  
+  If Global.fltAnschlussgrad > 0 Then Global.booSimulationEingabe = True
+  
+  If Global.fltVorlauftemperatur < Global.fltGrenzVorlauftemperatur Then
+    txlminVLHausWarnung.text = "!"
+  Else
+    txlminVLHausWarnung.text = ""
+  Endif
+  
+  If Global.fltGrenzRuecklauftemperatur > Global.fltGrenzVorlauftemperatur Then
+    txlRLHausWarnung.text = "!"
+  Else
+    txlRLHausWarnung.text = ""
+  Endif
+  
+  If Global.fltVorlauftemperatur < Global.fltGrenzRuecklauftemperatur Then
+    txlVLWarnung.Text = "!"
+  Else
+    txlVLWarnung.Text = ""
+  Endif
+  If Global.booSimulationEingabe And Global.booSimulationZeit Then
+    btnSimh.Enabled = True
+  Else
+    btnSimh.Enabled = False
+  Endif
+  If Global.booSimulationEingabe Then
+    btnAusgabe.Enabled = True
+  Else
+    btnAusgabe.Enabled = False
+  Endif
+End
+
+
+Public Sub Form_Close()
+  FMain.Show
+End
+
+
+Public Sub btnEingabe_Click()
+  FSimulation.Enabled = False
+  FSimulation_Eingabe.Show
+End
+
+
+Public Sub btnSimh_Click()
+  FSimulation.Enabled = False
+  FSimulation_Display.Show
+End
+
+
+Public Sub btnExit_Click()
+  FSimulation.Close
+  FMain.Show
+End
+
+
+Public Sub btnAusgabe_Click()
+  FSimulation.Enabled = False
+  FSimulation_Ausgabe.Show
+End
+
+
+
+

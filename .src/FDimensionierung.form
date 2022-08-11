@@ -1,0 +1,200 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { txbDeltaT TextBox
+    MoveScaled(26,12,16,4)
+    Text = ("45")
+  }
+  { sliDeltaT Slider
+    MoveScaled(1,16,41,4)
+    MinValue = 1
+    MaxValue = 80
+    Value = 30
+  }
+  { txbdPmax TextBox
+    MoveScaled(26,20,16,4)
+    Text = ("100")
+  }
+  { slidPmax Slider
+    MoveScaled(1,24,41,4)
+    MinValue = 1
+    MaxValue = 1000
+    Value = 150
+  }
+  { txbAnschluss TextBox
+    MoveScaled(26,28,16,4)
+    Text = ("100")
+  }
+  { sliAnschluss Slider
+    MoveScaled(1,32,41,4)
+    MinValue = 20
+    MaxValue = 101
+    Value = 100
+  }
+  { btnStart Button
+    MoveScaled(1,73,8,4.875)
+    Text = ("Start")
+  }
+  { btnExit Button
+    MoveScaled(41,73,8,4.875)
+    Text = ("Exit")
+  }
+  { Label8 Label
+    MoveScaled(1,1,24,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Dimensionierung")
+  }
+  { Label5 Label
+    MoveScaled(44,20,5,4)
+    Enabled = False
+    Text = ("Pa/m")
+  }
+  { Label4 Label
+    MoveScaled(1,20,21,4)
+    Enabled = False
+    Text = ("max. dP")
+  }
+  { Label3 Label
+    MoveScaled(1,12,21,4)
+    Enabled = False
+    Text = ("delta T Haus")
+  }
+  { Label15 Label
+    MoveScaled(44,13,5,4)
+    Enabled = False
+    Text = ("K")
+  }
+  { txbTempAusleg TextBox
+    MoveScaled(26,6,16,4)
+    Enabled = False
+    Text = ("100")
+  }
+  { chkMehrleiternetz CheckBox
+    MoveScaled(1,35,41,4)
+    Visible = False
+    Enabled = False
+    Text = ("Mehrleiternetz (4-Leiter)")
+  }
+  { panMehrleiter Panel
+    MoveScaled(0,39,49,34)
+    Visible = False
+    { drwRohre DrawingArea
+      MoveScaled(1,1,47.125,14.25)
+      Cached = True
+    }
+    { sliMLAVerhaeltnis Slider
+      MoveScaled(1,31,41,4)
+      MinValue = 10
+      MaxValue = 50
+      Value = 30
+    }
+    { txlAnteilRohr1 TextLabel
+      MoveScaled(31,26,4,4)
+      Text = ("70")
+    }
+    { txlAnteilRohr2 TextLabel
+      MoveScaled(31,29,4,4)
+      Text = ("30")
+    }
+    { txlAnteilRohr3 TextLabel
+      MoveScaled(1,26,28,4)
+      Text = ("Leiter1 Anteil Massenstrom")
+    }
+    { txlAnteilRohr4 TextLabel
+      MoveScaled(34,26,7,4)
+      Text = ("%")
+    }
+    { txlAnteilRohr5 TextLabel
+      MoveScaled(34,29,7,4)
+      Text = ("%")
+    }
+    { txlAnteilRohr6 TextLabel
+      MoveScaled(1,29,28,4)
+      Text = ("Leiter2 Anteil Massenstrom")
+    }
+    { chkGLSPL CheckBox
+      MoveScaled(1,16,47,4)
+      Text = ("Trennung Grundlast und Spitzenlast")
+    }
+    { panGLSPL Panel
+      MoveScaled(1,19,47,8)
+      Visible = False
+      { txbTWWVL TextBox
+        MoveScaled(20,0.5,4,3)
+        Text = ("70")
+      }
+      { TextLabel1 TextLabel
+        MoveScaled(16,0.5,4,4)
+        Text = ("VL")
+      }
+      { TextLabel2 TextLabel
+        MoveScaled(25,0.5,4,4)
+        Text = ("°C")
+      }
+      { TextLabel3 TextLabel
+        MoveScaled(30,0.5,8,4)
+        Text = ("RL")
+      }
+      { txbTWWRL TextBox
+        MoveScaled(38,0.5,4,3)
+        Text = ("55")
+      }
+      { TextLabel4 TextLabel
+        MoveScaled(43,0.5,4,4)
+        Text = ("°C")
+      }
+      { TextLabel5 TextLabel
+        MoveScaled(0,0.5,16,4)
+        Text = ("Temp. TWW Geb:")
+      }
+      { TextLabel6 TextLabel
+        MoveScaled(0,4,19,4)
+        Text = ("Temp. TWW Einspeis.")
+      }
+      { txbTWWVLEIN TextBox
+        MoveScaled(20,4,4,3)
+        Text = ("80")
+      }
+      { TextLabel7 TextLabel
+        MoveScaled(25,4,4,4)
+        Text = ("°C")
+      }
+      { TextLabel8 TextLabel
+        MoveScaled(30,4,4,4)
+        Text = ("dT")
+      }
+      { txbTWWdT TextBox
+        MoveScaled(38,4,4,3)
+        Text = ("20")
+      }
+      { TextLabel9 TextLabel
+        MoveScaled(43,4,4,4)
+        Text = ("K")
+      }
+    }
+  }
+  { Label7 Label
+    MoveScaled(44,28,5,4)
+    Enabled = False
+    Text = ("%")
+  }
+  { btnAnschlussgrad Button
+    MoveScaled(1,28,22,4)
+    Text = ("Anschlussgrad")
+  }
+  { Label6 Label
+    MoveScaled(44,6,5,4)
+    Enabled = False
+    Text = ("°C")
+  }
+  { Label9 Label
+    MoveScaled(1,6,20,4)
+    Enabled = False
+    Text = ("Außentemperatur (Ød) ")
+  }
+}

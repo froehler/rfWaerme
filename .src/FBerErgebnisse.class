@@ -1,0 +1,194 @@
+' Gambas class file
+
+
+Public Sub Form_Open()
+  Ergebnisdarstellung()
+End
+
+Public Sub Form_Close()
+  FBerechnung.Show
+End
+
+Public Sub Form_Activate()
+  Ergebnisdarstellung()
+End
+
+
+
+
+
+
+
+Public Sub Ergebnisdarstellung()
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+Dim strElement As String        'Hier wird ein Element aus dem gesplitteten Variablenfeld abgelegt
+Dim strGesplittet As String[]   'Dieses Datenfeld nimmt die gesplittete Zeile auf
+Dim strDatensatzPunkte As New String[Global.conSpaltenPunkte, Global.conMaxDatensaetze]
+Dim strDatensatzNetzTrasse As New String[Global.conSpaltenTrasse, Global.conMaxDatensaetze]
+Dim strDatensatzNetzTrasseMIF As New String[Global.conMaxDatensaetze * 3 + 5 + Global.conSpaltenTrasse]
+Dim strDatensatzTrassenWegPunkte As New String[Global.conMaxDatensaetze, Global.conMaxDatensaetze]
+Dim strDatensatzTrassenWegStrecken As New String[Global.conMaxDatensaetze, Global.conMaxDatensaetze]
+Dim intZeilenNetzTrasse, intZeilenPunkte, intZeilenNetzTrasseMIF As Integer
+Dim intSpaltenTrassenWeg As Integer
+Dim a, b, i, j As Integer
+Dim Qabs, Qgeliefert, QPump As Float
+Dim intNetzTrasseSpaltenzahl As Integer
+Dim dpmax, dp As Float
+Dim lmax, l, lsumme As Float
+Dim Mgesamt As Float
+Dim fltKosten As Float
+  
+'--------------------Dateien einlesen---------------------------------------------------        
+  a = 0
+  b = 0
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNameNetzTrasse & ".MID" For Input 'öffnen der Datei NetzTrasse.MID
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+    For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+      strDatensatzNetzTrasse[a, b] = Replace$(strElement, "\r", "")
+      a = a + 1   'nächste Spalte
+    Next    'nächstes Element in strGesplittet
+    intNetzTrasseSpaltenzahl = a
+    a = 0   'die Spaltennummer wird zurückgesetzt
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  intZeilenNetzTrasse = b
+  Close #hsDatei  'schließe Datei NetzTrasse.MID
+
+  
+  b = 0
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNameNetzTrasse & ".MIF" For Input 'öffnen der Datei NetzTrasse.MIF
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strDatensatzNetzTrasseMIF[b] = Replace$(strZeile, "\r", "")
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  intZeilenNetzTrasseMIF = b
+  Close #hsDatei  'schließe Datei NetzTrasse.MIF
+
+
+  a = 0
+  b = 0
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNamePunkte & ".MID" For Input 'öffnen der Datei Punkte.MID
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+    For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+      strDatensatzPunkte[a, b] = Replace$(strElement, "\r", "")
+      a = a + 1   'nächste Spalte
+    Next    'nächstes Element in strGesplittet
+    a = 0   'die Spaltennummer wird zurückgesetzt
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  intZeilenPunkte = b
+  Close #hsDatei  'schließe Datei Punkte.MID
+  
+  
+  a = 0
+  b = 0
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNamePfadeStrecken & ".csv" For Input 'öffnen der Datei rfPfadeStrecken.csv
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+    For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+      strDatensatzTrassenWegStrecken[a, b] = Replace$(strElement, "\r", "")
+      a = a + 1   'nächste Spalte
+    Next    'nächstes Element in strGesplittet
+    intSpaltenTrassenWeg = a
+    a = 0   'die Spaltennummer wird zurückgesetzt
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  Close #hsDatei  'schließe Datei NetzTrasse.MID
+
+
+  a = 0
+  b = 0
+  hsDatei = Open Global.strtxbPfad & Global.conDateiNamePfadePunkte & ".csv" For Input 'öffnen der Datei rfPfadeStrecken.csv
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    strGesplittet = Split(strZeile, Chr$(9))    'es wird der gelesenen String (strZeile) in die durch "<TAB>" getrennten Unterstrings unterteilt und an das Stringfeld (strGesplittet) übergebe
+    For Each strElement In strGesplittet    'Schleife über alle Elemente im Stringfeld (strGesplittet)
+      strDatensatzTrassenWegPunkte[a, b] = Replace$(strElement, "\r", "")
+      a = a + 1   'nächste Spalte
+    Next    'nächstes Element in strGesplittet
+    intSpaltenTrassenWeg = a
+    a = 0   'die Spaltennummer wird zurückgesetzt
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  Close #hsDatei  'schließe Datei NetzTrasse.MID
+'--------------------Dateien einlesen ENDE---------------------------------------------------   
+  
+  
+  dpmax = 0
+  lmax = 0
+  lsumme = 0
+  Qabs = 0
+  Qgeliefert = 0
+  
+  
+  For i = 0 To intSpaltenTrassenWeg - 1
+    dp = 0
+    l = 0
+    For j = 1 To strDatensatzTrassenWegStrecken[i, 0]
+      If strDatensatzNetzTrasse[4, CInt(strDatensatzTrassenWegStrecken[i, j]) - 1] <> "0" Then
+        dp += strDatensatzNetzTrasse[5, CInt(strDatensatzTrassenWegStrecken[i, j]) - 1]
+        l += strDatensatzNetzTrasse[2, CInt(strDatensatzTrassenWegStrecken[i, j]) - 1]
+      Endif
+    Next
+    If dpmax < dp Then dpmax = dp
+    If lmax < l Then lmax = l
+  Next
+  dpmax += Global.fltWaermetauscherdP
+
+  For i = 0 To intSpaltenTrassenWeg - 1
+    If CFloat(strDatensatzPunkte[5, CInt(strDatensatzTrassenWegPunkte[i, 1]) - 1]) > 0 Then
+      Qgeliefert += CFloat(strDatensatzPunkte[18, CInt(strDatensatzTrassenWegPunkte[i, 1]) - 1])
+    Endif
+  Next
+  
+  For i = 0 To intZeilenNetzTrasse - 1
+    If strDatensatzNetzTrasse[4, i] <> "0" Then
+      lsumme += strDatensatzNetzTrasse[2, i]
+      Qabs += strDatensatzNetzTrasse[10, i] + strDatensatzNetzTrasse[11, i]
+    Endif
+  Next
+  
+  Mgesamt = CFloat(strDatensatzPunkte[5, 0])
+  QPump = ((Mgesamt / 1000) * dpmax * 100000) / 1000
+  
+   txtdPist.Text = Round(dpmax, -2)
+   txtlmax.Text = Round(lmax, 0)
+   txtlgesamt.Text = Round(lsumme, 0)
+   txtQabsolut.text = Round(Qabs / 1000, 0)
+   txtQrelativ.text = Round(100 * ((Qabs / 1000) / Qgeliefert), 0)
+   txtQgeliefert.text = Round(Qgeliefert, 0)
+   txtMgesamt.text = Round(Mgesamt, -2)
+   txtQhyPump.text = Round(QPump, -4)
+   txtQelPumpe.text = Round(QPump / Global.fltWirkungsgradPumpe, -4)
+   
+   gdvRohrtrasse.Columns.count = 3
+   gdvRohrtrasse.Columns[0].Title = "di [mm]"
+   gdvRohrtrasse.Columns[0].Width = 100
+   gdvRohrtrasse.Columns[1].Title = "Länge [trm]"
+   gdvRohrtrasse.Columns[1].Width = 130
+   gdvRohrtrasse.Columns[2].Title = "Kosten [€]"
+   gdvRohrtrasse.Columns[2].Width = 200
+   gdvRohrtrasse.Rows.count = Global.conMaxRohre
+   
+  fltKosten = 0
+  For i = 0 To Global.conMaxRohre - 1
+    gdvRohrtrasse[i, 0].text = Global.fltRohrLaengeKosten[0, i]
+    gdvRohrtrasse[i, 1].text = Round(Global.fltRohrLaengeKosten[1, i], 0)
+    gdvRohrtrasse[i, 2].text = Round(Global.fltRohrLaengeKosten[2, i], 0)
+    fltKosten += Global.fltRohrLaengeKosten[2, i]
+  Next
+  txlKosten.text = CStr(Round(fltKosten, 0))
+End
+
+
+Public Sub btnExit_Click()
+  FBerErgebnisse.Close
+  FBerechnung.Show
+End

@@ -1,0 +1,203 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(50.75,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { txtlgesamt TextLabel
+    MoveScaled(12.75,32,6,4)
+    Text = ("0")
+  }
+  { TextLabel7 TextLabel
+    MoveScaled(1,69,20,4)
+    Text = ("Wärmeverlust absolut:")
+  }
+  { txtQabsolut TextLabel
+    MoveScaled(27,69,14,4)
+    Text = ("0")
+  }
+  { TextLabel11 TextLabel
+    MoveScaled(1,66,20,4)
+    Text = ("Wärmeverkauf:")
+  }
+  { txtQgeliefert TextLabel
+    MoveScaled(27,66,14,4)
+    Text = ("0")
+  }
+  { TextLabel12 TextLabel
+    MoveScaled(41,66,6.5,4)
+    Text = ("MWh/a")
+  }
+  { Label8 Label
+    MoveScaled(1,1,29,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Simulation Ergebnisse")
+  }
+  { btnExit Button
+    MoveScaled(41,73,8,4.875)
+    Text = ("Exit")
+  }
+  { TextLabel17 TextLabel
+    MoveScaled(1,57,20,4)
+    Text = ("el. Pumpenenergie")
+  }
+  { txtQelPumpe TextLabel
+    MoveScaled(27,57,14,4)
+    Text = ("0")
+  }
+  { TextLabel18 TextLabel
+    MoveScaled(41,57,6.5,4)
+    Text = ("MWh/a")
+  }
+  { TextLabel19 TextLabel
+    MoveScaled(1,32,9,4)
+    Text = ("Investition")
+  }
+  { txlKosten TextLabel
+    MoveScaled(27,32,14,4)
+    Text = ("0")
+  }
+  { btnImportErgebnisse Button
+    MoveScaled(1,5,8,4.875)
+    Text = ("Import")
+  }
+  { gdvRohrtrasse GridView
+    MoveScaled(1,11,48,20)
+    Header = GridView.Horizontal
+  }
+  { TextLabel13 TextLabel
+    MoveScaled(1,44,22,4)
+    Text = ("spez. Kosten Invest:")
+  }
+  { txlKostenspez TextLabel
+    MoveScaled(27,44,14,4)
+    Text = ("0")
+  }
+  { TextLabel14 TextLabel
+    MoveScaled(41,44,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel22 TextLabel
+    MoveScaled(1,47,23,4)
+    Text = ("spez. Kosten Verbrauch:")
+  }
+  { txlKostenspez2 TextLabel
+    MoveScaled(27,47,14,4)
+    Text = ("0")
+  }
+  { TextLabel23 TextLabel
+    MoveScaled(41,47,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel15 TextLabel
+    MoveScaled(1,35,9,4)
+    Text = ("Investition")
+  }
+  { txlAnzahlWS TextLabel
+    MoveScaled(13,35,5,4)
+    Text = ("0")
+  }
+  { txlPreisWS TextLabel
+    MoveScaled(27,35,14,4)
+    Text = ("0")
+  }
+  { TextLabel16 TextLabel
+    MoveScaled(41,35,6,4)
+    Text = ("€")
+  }
+  { TextLabel24 TextLabel
+    MoveScaled(18,35,9,4)
+    Text = ("Stationen")
+  }
+  { Separator1 Separator
+    MoveScaled(1,56,48,2)
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(41,32,6,4)
+    Text = ("€")
+  }
+  { TextLabel2 TextLabel
+    MoveScaled(1,38,25,4)
+    Text = ("Investition Spitzenlasterzeuger")
+  }
+  { txlPreisSPL TextLabel
+    MoveScaled(27,38,14,4)
+    Text = ("0")
+  }
+  { TextLabel3 TextLabel
+    MoveScaled(41,38,6,4)
+    Text = ("€")
+  }
+  { TextLabel4 TextLabel
+    MoveScaled(18,32,9,4)
+    Text = ("trm Netz")
+  }
+  { TextLabel5 TextLabel
+    MoveScaled(1,50,23,4)
+    Text = ("spez. Kosten Wartung:")
+  }
+  { txlKostenspez3 TextLabel
+    MoveScaled(27,50,14,4)
+    Text = ("0")
+  }
+  { TextLabel6 TextLabel
+    MoveScaled(41,50,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel20 TextLabel
+    MoveScaled(1,53,23,4)
+    Text = ("spez. Kosten Summe:")
+  }
+  { txlKostenspez4 TextLabel
+    MoveScaled(27,53,14,4)
+    Text = ("0")
+  }
+  { TextLabel21 TextLabel
+    MoveScaled(41,53,6.5,4)
+    Text = ("€/MWh")
+  }
+  { TextLabel27 TextLabel
+    MoveScaled(1,60,20,4)
+    Text = ("Wärme Grundlast:")
+  }
+  { txtQgeliefertGL TextLabel
+    MoveScaled(27,60,14,4)
+    Text = ("0")
+  }
+  { TextLabel28 TextLabel
+    MoveScaled(41,59.875,6.5,4)
+    Text = ("MWh/a")
+  }
+  { TextLabel29 TextLabel
+    MoveScaled(41,63,6.5,4)
+    Text = ("MWh/a")
+  }
+  { txtQgeliefertSPL TextLabel
+    MoveScaled(27,63,14,4)
+    Text = ("0")
+  }
+  { TextLabel30 TextLabel
+    MoveScaled(1,63,20,4)
+    Text = ("Wärme Spitzenlast:")
+  }
+  { TextLabel8 TextLabel
+    MoveScaled(41,69,6.5,4)
+    Text = ("MWh/a")
+  }
+  { btnJDL Button
+    MoveScaled(21,5,8,4.875)
+    Text = ("JDL")
+  }
+  { Separator2 Separator
+    MoveScaled(0,-2,48,2)
+  }
+  { Separator3 Separator
+    MoveScaled(1,42,48,2)
+  }
+  { btnWirtschaftlichkeit Button
+    MoveScaled(11,5,8,4.875)
+    Text = ("€")
+  }
+}

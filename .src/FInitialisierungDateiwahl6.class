@@ -1,0 +1,43 @@
+' Gambas class file
+Public Sub Form_open()
+  ficMIFdatei.Dir = Left$(Global.strtxbPfad, -1)
+  ficMIFdatei.Filter = ["*.mif;*.MIF", "mapinfo Datei"]
+  ficMIFdatei.FilterIndex = 0
+End
+
+Public Sub btnOK_Click()
+  Dim strOrdner As String
+  Dim booOK As Boolean
+  booOK = False
+  If ficMIFdatei.value <> "" Then
+    Global.strPfadMIFdatei = ficMIFdatei.Value
+    strOrdner = ficMIFdatei.Dir
+    If Right$(Global.strPfadMIFdatei, 3) = "mif" Or Right$(Global.strPfadMIFdatei, 3) = "MIF" Then
+      booOk = True
+    Endif
+    If Right$(Global.strPfadMIFdatei, 3) = "mif" Or Right$(Global.strPfadMIFdatei, 3) = "MIF" Then
+      booOk = True
+    Endif
+    
+    If Programmcode.funTesteDatei(Left$(Global.strPfadMIFdatei, -4) & ".mid") = False And Programmcode.funTesteDatei(Left$(Global.strPfadMIFdatei, -4) & ".MID") = False Then
+      booOk = False
+      Message("Die Datei " & Left$(Global.strPfadMIFdatei, -4) & ".mid ist nicht vorhanden!")
+    Endif
+      
+    
+    If booOk Then
+      Programmcode.KonvertiereMIFDatei()
+      FInitialisierungDateiwahl6.CLOSE
+      FInitialisierung.Show
+      FInitialisierung.Enabled = True
+      FInitialisierung.Form_open
+    Endif
+  Endif
+End
+
+Public Sub btnExit_Click()
+  Global.strPfadMIFdatei = ficMIFdatei.value
+  FInitialisierungDateiwahl6.CLOSE
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+End

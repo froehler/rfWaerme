@@ -1,0 +1,125 @@
+' Gambas class file
+
+Static Public strDWDInput As New String[10, 1500] 
+Static Public strDWDURL As String
+Static Public strDWDDatei As String
+
+
+Public Sub Form_Open()
+  ladeFTPStationen() 
+  Wait 3
+  Ergebnisdarstellung()
+End
+
+Public Sub ladeFTPStationen()
+
+  strDWDDatei = Global.strtxbPfad & "KL_Tageswerte_Beschreibung_Stationen.txt"
+  strDWDURL = "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/KL_Tageswerte_Beschreibung_Stationen.txt"
+ 
+  FtpClient1_Read()
+
+End
+
+Public Sub FtpClient1_Read()
+Dim myFtp As New FtpClient
+
+  myFtp.URL = strDWDURL
+  myFtp.Get(strDWDDatei)
+
+End
+
+Public Function funEndDatum(strDatumin As String) As String
+Dim strHeute, strDatumout As String
+
+strHeute = Mid$(CStr(Now()), 7, 4)
+
+  If strHeute = Mid$(strDatumin, 1, 4) Then
+    strDatumout = CStr(CInt(strHeute) - 1) & "1231"
+  Else
+    strDatumout = strDatumin
+  Endif  
+
+  Return strDatumout  
+
+End
+
+
+
+Public Sub Ergebnisdarstellung()
+Dim b, i, z As Integer
+Dim hsDatei As Stream
+Dim strZeile As String          'Hier wird eine Zeile direkt aus der Datei eingelesen
+
+b = 0
+   
+  hsDatei = Open Global.strtxbPfad & "/KL_Tageswerte_Beschreibung_Stationen.txt" For Input 'öffnen das Lastprofil
+  While Not Eof(hsDatei)
+    Line Input #hsDatei, strZeile    'es wird die Zeile an der Position beginnend wo der Pointer steht eingelesen bis zum Zeilenumbruchzeichen
+    If b > 1 Then
+      strZeile = Conv$(strZeile, "ISO-8859-15", "UTF-8")
+      strDWDInput[0, b - 2] = Mid$(strZeile, 1, 5) 'StationsID
+      strDWDInput[1, b - 2] = Mid$(strZeile, 62, 40) 'Ort
+      strDWDInput[2, b - 2] = Mid$(strZeile, 103, 20) 'Bundesland
+      strDWDInput[3, b - 2] = Mid$(strZeile, 7, 8) ' von Datum
+      strDWDInput[4, b - 2] = Mid$(strZeile, 16, 8) ' bis Datum
+    Endif
+    b = b + 1   'die Zeilennummer wird um 1 erhöht
+  Wend
+  z = b
+  Close #hsDatei  'schließe Datei NetzTrasse.MIF
+    
+    
+  gdvDWDload.Columns.count = 5
+  gdvDWDload.Columns[0].Title = "ID"
+  gdvDWDload.Columns[0].Width = 100
+  gdvDWDload.Columns[1].Title = "Ort"
+  gdvDWDload.Columns[1].Width = 200
+  gdvDWDload.Columns[2].Title = "Bundesland"
+  gdvDWDload.Columns[2].Width = 200
+  gdvDWDload.Columns[3].Title = "von"
+  gdvDWDload.Columns[3].Width = 200
+  gdvDWDload.Columns[4].Title = "bis"
+  gdvDWDload.Columns[4].Width = 200
+  gdvDWDload.Rows.count = z
+   
+  For i = 0 To z - 1
+    gdvDWDload[i, 0].text = CStr(strDWDInput[0, i])
+    gdvDWDload[i, 1].text = CStr(strDWDInput[1, i])
+    gdvDWDload[i, 2].text = CStr(strDWDInput[2, i])
+    gdvDWDload[i, 3].text = CStr(strDWDInput[3, i])
+    gdvDWDload[i, 4].text = CStr(strDWDInput[4, i])
+  Next
+  
+End
+
+
+Public Sub ladeDWDzip()
+Dim intZeile As Integer
+
+  intZeile = gdvDWDload.row
+
+  strDWDDatei = Global.strtxbPfad & strDWDInput[0, intZeile] & ".zip"
+  strDWDURL = "ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/tageswerte_KL_" & strDWDInput[0, intZeile] & "_" & strDWDInput[3, intZeile] & "_" & funEndDatum(strDWDInput[4, intZeile]) & "_hist.zip"
+  
+  FtpClient1_Read()  
+
+End
+
+Public Sub unzipDWDzip()
+Dim intZeile As Integer
+
+  intZeile = gdvDWDload.row
+  Shell "unzip " & Global.strtxbPfad & strDWDInput[0, intZeile] & ".zip -d " & Global.strtxbPfad & " produkt_klima_tag_" & strDWDInput[3, intZeile] & "_" & funEndDatum(strDWDInput[4, intZeile]) & "_" & strDWDInput[0, intZeile] & ".txt"
+  
+End
+
+Public Sub btnOK_Click()
+  ladeDWDzip()
+  Wait 2
+  unzipDWDzip()
+  Wait 1
+  FInitialisierungDateiwahl9.Close
+  FInitialisierung.Show
+  FInitialisierung.Enabled = True
+  FInitialisierung.Form_open
+End

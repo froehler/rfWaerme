@@ -1,0 +1,204 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { btnEingabe Button
+    MoveScaled(1,5,8,4.875)
+    Text = ("Eingabe")
+  }
+  { btnExit Button
+    MoveScaled(41,73,8,4.875)
+    Text = ("Exit")
+  }
+  { Label8 Label
+    MoveScaled(1,1,24,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Simulation")
+  }
+  { TextLabel3 TextLabel
+    MoveScaled(11,5,13,4)
+    Enabled = False
+    Text = ("Temperatur VL")
+    Alignment = Align.Normal
+  }
+  { txlTempVL TextLabel
+    MoveScaled(35,5,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { txlErdreichTemp TextLabel
+    MoveScaled(35,1,7.125,4)
+    Visible = False
+    Enabled = False
+  }
+  { Label1 Label
+    MoveScaled(11,8,21,4)
+    Enabled = False
+    Text = ("min. Temp. VL Haus ")
+  }
+  { txlminVLHaus TextLabel
+    MoveScaled(35,8,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { txlRLHaus TextLabel
+    MoveScaled(35,11,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label3 Label
+    MoveScaled(11,11,21,4)
+    Enabled = False
+    Text = ("min. Temp. RL Haus ")
+  }
+  { Label4 Label
+    MoveScaled(11,14,22,4)
+    Enabled = False
+    Text = ("Toleranz Temp. Haus  +-")
+  }
+  { txlToleranz TextLabel
+    MoveScaled(35,14,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label5 Label
+    MoveScaled(11,17,21,4)
+    Enabled = False
+    Text = ("Rechenschritte")
+  }
+  { txlRechenschritte TextLabel
+    MoveScaled(35,17,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label6 Label
+    MoveScaled(11,20,21,4)
+    Enabled = False
+    Text = ("Dämmklasse")
+  }
+  { txlDaemmklasse TextLabel
+    MoveScaled(35,20,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label7 Label
+    MoveScaled(11,23,21,4)
+    Enabled = False
+    Text = ("dP Wärmetauscher")
+  }
+  { txldPWT TextLabel
+    MoveScaled(35,23,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label9 Label
+    MoveScaled(11,26,22,4)
+    Enabled = False
+    Text = ("Zuschlag dP Formstücke")
+  }
+  { txldPZuschlagFSt TextLabel
+    MoveScaled(35,26,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label10 Label
+    MoveScaled(11,29,22,4)
+    Enabled = False
+    Text = ("Wirkungsgrad Pumpe")
+  }
+  { txlWirkgradPumpe TextLabel
+    MoveScaled(35,29,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { txlminVLHausWarnung TextLabel
+    MoveScaled(43,8,4,4)
+    Enabled = False
+    Foreground = &HFF0000&
+    Alignment = Align.Normal
+  }
+  { txlVLWarnung TextLabel
+    MoveScaled(43,14,4,4)
+    Enabled = False
+    Foreground = &HFF0000&
+    Alignment = Align.Normal
+  }
+  { txlRLHausWarnung TextLabel
+    MoveScaled(43,11,4,4)
+    Enabled = False
+    Foreground = &HFF0000&
+    Alignment = Align.Normal
+  }
+  { btnSimh Button
+    MoveScaled(1,41,8,4.875)
+    Text = ("Sim")
+  }
+  { Label15 Label
+    MoveScaled(11,32,22,4)
+    Enabled = False
+    Text = ("Anschlussgrad")
+  }
+  { txlAnschlussgrad TextLabel
+    MoveScaled(35,32,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { btnAusgabe Button
+    MoveScaled(1,66,8,4.875)
+    Text = ("Ergebnis")
+  }
+  { txlSimJahr TextLabel
+    MoveScaled(35,41,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { txlQuellJahr TextLabel
+    MoveScaled(35,47,7.125,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label12 Label
+    MoveScaled(11,44,22,4)
+    Enabled = False
+    Text = ("Heizgradtage")
+  }
+  { txlGTZSim TextLabel
+    MoveScaled(35,44,10,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { txlGTZKW TextLabel
+    MoveScaled(35,50,10,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+  { Label13 Label
+    MoveScaled(11,50,22,4)
+    Enabled = False
+    Text = ("Gradtagszahl")
+  }
+  { Label14 Label
+    MoveScaled(11,41,22,4)
+    Enabled = False
+    Text = ("Simulationsjahr")
+  }
+  { Label16 Label
+    MoveScaled(11,47,22,4)
+    Enabled = False
+    Text = ("Energiedatenjahr")
+  }
+  { Label17 Label
+    MoveScaled(11,53,22,4)
+    Enabled = False
+    Text = ("Simulations-/Basisklima")
+  }
+  { txlKlimaProzent TextLabel
+    MoveScaled(35,53,10,4)
+    Enabled = False
+    Alignment = Align.Normal
+  }
+}

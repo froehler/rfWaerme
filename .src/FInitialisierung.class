@@ -1,0 +1,283 @@
+' Gambas class file
+
+Public Sub Form_Open()
+  Global.booInitialisierung = False
+ 
+ 
+  'Pfad in oberste Zeile schreiben
+  txlPfad.text = Global.strtxbPfad
+ 
+ 'Vorbelegung globaler Variablen in der Dimensionierung und Berechnung
+  'Dimensionierung:
+  Global.fltdeltaTHaus = 30  
+  Global.fltMaxDP = 150 
+  Global.fltAnschlussgrad = 100
+  
+  'Berechnung:
+  Global.fltVorlauftemperatur = 90
+  Global.fltGrenzVorlauftemperatur = 75
+  Global.fltGrenzRuecklauftemperatur = 60
+  Global.fltGrenzRuecklauftemperaturToleranz = 1
+  Global.fltWirkungsgradPumpe = 0.6
+  Global.intDaemmklasse = 1
+  Global.fltZuschlagFormstuecke = 0.3
+  Global.fltWaermetauscherdP = 1.0
+  Global.intSchritte = 20
+  
+ 'Einspeiserdateien vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameEinspeiser & ".MID") Then
+    Global.booDateiEinspeiserMID = True
+    ' [GB2:FCOL] txlEinspeiserMID2.ForeColor = &HA2AD00&
+    txlEinspeiserMID2.Foreground = &HA2AD00&
+    txlEinspeiserMID2.text = "vorhanden"
+  Else
+    Global.booDateiEinspeiserMID = False
+    ' [GB2:FCOL] txlEinspeiserMID2.ForeColor = &H00E37222&
+    txlEinspeiserMID2.Foreground = &H00E37222&
+    txlEinspeiserMID2.text = "nicht vorhanden"
+  Endif
+
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameEinspeiser & ".MIF") Then
+    Global.booDateiEinspeiserMIF = True
+    ' [GB2:FCOL] txlEinspeiserMIF2.ForeColor = &HA2AD00&
+    txlEinspeiserMIF2.Foreground = &HA2AD00&
+    txlEinspeiserMIF2.text = "vorhanden"
+  Else
+    Global.booDateiEinspeiserMIF = False
+    ' [GB2:FCOL] txlEinspeiserMIF2.ForeColor = &H00E37222&
+    txlEinspeiserMIF2.Foreground = &H00E37222&
+    txlEinspeiserMIF2.text = "nicht vorhanden"
+  Endif
+  
+   'Abnehmerdateien vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameAbnehmer & ".MID") Then
+    Global.booDateiAbnehmerMID = True
+    ' [GB2:FCOL] txlAbnehmerMID2.ForeColor = &HA2AD00&
+    txlAbnehmerMID2.Foreground = &HA2AD00&
+    txlAbnehmerMID2.text = "vorhanden"
+  Else
+    Global.booDateiAbnehmerMID = False
+    ' [GB2:FCOL] txlAbnehmerMID2.ForeColor = &H00E37222&
+    txlAbnehmerMID2.Foreground = &H00E37222&
+    txlAbnehmerMID2.text = "nicht vorhanden"
+  Endif
+
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameAbnehmer & ".MIF") Then
+    Global.booDateiAbnehmerMIF = True
+    ' [GB2:FCOL] txlAbnehmerMIF2.ForeColor = &HA2AD00&
+    txlAbnehmerMIF2.Foreground = &HA2AD00&
+    txlAbnehmerMIF2.text = "vorhanden"
+  Else
+    Global.booDateiAbnehmerMIF = False
+    ' [GB2:FCOL] txlAbnehmerMIF2.ForeColor = &H00E37222&
+    txlAbnehmerMIF2.Foreground = &H00E37222&
+    txlAbnehmerMIF2.text = "nicht vorhanden"
+  Endif
+  
+  'NetzTrassedateien vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameNetzTrasse & ".MID") Then
+    Global.booDateiNetzTrasseMID = True
+    ' [GB2:FCOL] txlNetzTrasseMID2.ForeColor = &HA2AD00&
+    txlNetzTrasseMID2.Foreground = &HA2AD00&
+    txlNetzTrasseMID2.text = "vorhanden"
+  Else
+    Global.booDateiNetzTrasseMID = False
+    ' [GB2:FCOL] txlNetzTrasseMID2.ForeColor = &H00E37222&
+    txlNetzTrasseMID2.Foreground = &H00E37222&
+    txlNetzTrasseMID2.text = "nicht vorhanden"
+  Endif
+
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameNetzTrasse & ".MIF") Then
+    Global.booDateiNetzTrasseMIF = True
+    ' [GB2:FCOL] txlNetzTrasseMIF2.ForeColor = &HA2AD00&
+    txlNetzTrasseMIF2.Foreground = &HA2AD00&
+    txlNetzTrasseMIF2.text = "vorhanden"
+  Else
+    Global.booDateiNetzTrasseMIF = False
+    ' [GB2:FCOL] txlNetzTrasseMIF2.ForeColor = &H00E37222&
+    txlNetzTrasseMIF2.Foreground = &H00E37222&
+    txlNetzTrasseMIF2.text = "nicht vorhanden"
+  Endif
+  
+  'Rohrbibliothekdatei vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameBibRohre & ".csv") Then
+    Global.booDateiRohreCSV = True
+    ' [GB2:FCOL] txlRohreCSV2.ForeColor = &HA2AD00&
+    txlRohreCSV2.Foreground = &HA2AD00&
+    txlRohreCSV2.text = "vorhanden"
+  Else
+    Global.booDateiRohreCSV = False
+    ' [GB2:FCOL] txlRohreCSV2.ForeColor = &H00E37222&
+    txlRohreCSV2.Foreground = &H00E37222&
+    txlRohreCSV2.text = "nicht vorhanden"
+  Endif
+  
+  'Lastprofilbibliothekdatei vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameLastprofil & ".csv") Then
+    Global.booDateiLastprofileCSV = True
+    ' [GB2:FCOL] txlLastprofileCSV2.ForeColor = &HA2AD00&
+    txlLastprofileCSV2.Foreground = &HA2AD00&
+    txlLastprofileCSV2.text = "vorhanden"
+  Else
+    Global.booDateiLastprofileCSV = False
+    ' [GB2:FCOL] txlLastprofileCSV2.ForeColor = &H00E37222&
+    txlLastprofileCSV2.Foreground = &H00E37222&
+    txlLastprofileCSV2.text = "nicht vorhanden"
+  Endif
+
+  'DWDdatei vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameKlimaTag & ".csv") Then
+    Global.booDateiKlimaTagCSV = True
+    ' [GB2:FCOL] txlKlimaTagCSV2.ForeColor = &HA2AD00&
+    txlKlimaTagCSV2.Foreground = &HA2AD00&
+    txlKlimaTagCSV2.text = "vorhanden"
+  Else
+    Global.booDateiKlimaTagCSV = False
+    ' [GB2:FCOL] txlKlimaTagCSV2.ForeColor = &H00E37222&
+    txlKlimaTagCSV2.Foreground = &H00E37222&
+    txlKlimaTagCSV2.text = "nicht vorhanden"
+  Endif
+
+
+  'TRY04 Deutschlandklimadatei zur Berechnung des Kundenwertes KW vorhanden?
+  If Programmcode.funTesteTRY04() Then
+    chbEpiscope.Enabled = True
+    chbEpiscope.value = True
+    btnDWDKW.Enabled = False    
+  Else
+    chbEpiscope.Enabled = False
+    chbEpiscope.value = False
+    btnDWDKW.Enabled = True 
+  Endif
+
+  'DWDdatei zur Berechnung des Kundenwertes KW  vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameKlimaTagKW & ".csv") Then
+    Global.booDateiKlimaTagKWCSV = True
+    ' [GB2:FCOL] txlKlimaTagCSV1.ForeColor = &HA2AD00&
+    txlKlimaTagCSV1.Foreground = &HA2AD00&
+    txlKlimaTagCSV1.text = "vorhanden"
+  Else
+    Global.booDateiKlimaTagKWCSV = False
+    ' [GB2:FCOL] txlKlimaTagCSV1.ForeColor = &H00E37222&
+    txlKlimaTagCSV1.Foreground = &H00E37222&
+    txlKlimaTagCSV1.text = "nicht vorhanden"
+  Endif
+
+  If Global.booDateiEinspeiserMIF And Global.booDateiAbnehmerMID And Global.booDateiAbnehmerMIF And Global.booDateiNetzTrasseMID And Global.booDateiNetzTrasseMIF And Global.booDateiRohreCSV And Global.booDateiLastprofileCSV And Global.booDateiKlimaTagCSV And Global.booDateiKlimaTagKWCSV Then
+    Global.booInitialisierung = True
+    Global.booInitialisierung_show = False
+    Global.booDimensionierung_show = True
+  Else
+    Global.booInitialisierung = False
+    Global.booInitialisierung_show = True
+  Endif
+  If Global.booInitialisierung = True Then Programmcode.Initialisierung()
+End
+
+
+
+Public Sub btnDWD_Click()
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl.show
+End
+
+Public Sub btnDWDKW_Click()
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl7.show
+End
+
+Public Sub btnImportNetzTrasse_Click()
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl3.show
+End
+
+
+Public Sub btnImportAbnehmer_Click()
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl4.show
+End
+
+Public Sub btnImportEinspeiser_Click()
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl5.show
+End
+
+Public Sub btnImportMIF_Click()
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl6.show
+End
+
+Public Sub btnOK_Click()
+  FInitialisierung.Close
+  FMain.Show
+End
+
+
+Public Sub Form_Close()
+  FInitialisierung.Close
+  FMain.Show
+End
+
+
+
+
+
+Public Sub btnFTP_Click()
+
+  FInitialisierung.Enabled = False
+  FInitialisierungDateiwahl9.show
+
+End
+
+
+
+
+
+Public Sub chbEpiscope_Click()
+
+  If chbEpiscope.Value = False Then
+    btnDWDKW.Enabled = True 'hide DWD Button
+    chbEpiscope.Enabled = False
+  Else
+    btnDWDKW.Enabled = False 'hide DWD Button      
+  Endif
+
+End
+
+Public Sub btnrfRohre_Click()
+  If Exist(Global.strtxbPfad & "rfRohre.csv")
+    Kill Global.strtxbPfad & "rfRohre.csv"
+  Endif  
+    
+  If rdb_rfRohre_b.Value = True And rdb_rfRohre_s.Value = True Then 
+    Copy Global.conDateiQuellpfad & "rfRohre_be_st.csv" To Global.strtxbPfad & "rfRohre.csv"
+  Endif
+  
+  If rdb_rfRohre_u.Value = True And rdb_rfRohre_s.Value = True Then 
+    Copy Global.conDateiQuellpfad & "rfRohre_un_st.csv" To Global.strtxbPfad & "rfRohre.csv"
+  Endif  
+
+  If rdb_rfRohre_u.Value = True And rdb_rfRohre_f.Value = True Then 
+    Copy Global.conDateiQuellpfad & "rfRohre_un_fl.csv" To Global.strtxbPfad & "rfRohre.csv"
+  Endif  
+  
+  If rdb_rfRohre_b.Value = True And rdb_rfRohre_f.Value = True Then 
+    Copy Global.conDateiQuellpfad & "rfRohre_be_fl.csv" To Global.strtxbPfad & "rfRohre.csv"
+  Endif  
+
+
+  'Rohrbibliothekdatei vorhanden?
+  If Programmcode.funTesteDatei(Global.strtxbPfad & Global.conDateiNameBibRohre & ".csv") Then
+    Global.booDateiRohreCSV = True
+    ' [GB2:FCOL] txlRohreCSV2.ForeColor = &HA2AD00&
+    txlRohreCSV2.Foreground = &HA2AD00&
+    txlRohreCSV2.text = "vorhanden"
+  Else
+    Global.booDateiRohreCSV = False
+    ' [GB2:FCOL] txlRohreCSV2.ForeColor = &H00E37222&
+    txlRohreCSV2.Foreground = &H00E37222&
+    txlRohreCSV2.text = "nicht vorhanden"
+  Endif
+
+End
+

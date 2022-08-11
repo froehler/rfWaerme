@@ -1,0 +1,231 @@
+' Gambas class file
+
+
+Public Sub Form_open()
+  Programmcode.lese_Klima_Tag
+  Programmcode.lese_Klima_TagKW
+  Global.fltAuslegungstemperatur = Programmcode.funAuslegungstemperatur()
+  txbTempAusleg.Text = CStr(Global.fltAuslegungstemperatur)
+  'sliAusleg.Value = Global.fltAuslegungsfaktor
+  'txbAusleg.Text = CStr(Global.fltAuslegungsfaktor)
+  sliDeltaT.Value = Global.fltdeltaTHaus
+  txbDeltaT.Text = CStr(Global.fltdeltaTHaus)
+  slidPmax.Value = Global.fltMaxDP
+  txbdPmax.Text = CStr(Global.fltMaxDP)
+  sliAnschluss.Value = Global.fltAnschlussgrad
+  txbAnschluss.Text = CStr(sliAnschluss.Value)
+  sliMLAVerhaeltnis.Value = Global.fltMLAnteilLeiter2
+  txlAnteilRohr2.Text = CStr(Global.fltMLAnteilLeiter2)
+  txlAnteilRohr1.Text = CStr(100 - Global.fltMLAnteilLeiter2)
+  
+  If Global.booMehrleiter = True Then
+    panMehrleiter.Visible = True
+    Wait 0.1
+    chkMehrleiternetz.Value = True
+  Else
+    panMehrleiter.Visible = False
+    chkMehrleiternetz.Value = False
+  Endif
+  
+End
+
+
+Public Sub Form_Close()
+  Global.booDimensionierung = False
+  Global.booBerechnungsFreigabe = False
+  FMain.Show
+End
+
+
+Public Sub btnExit_Click()
+  FDimensionierung.Close
+  Global.booDimensionierung = False
+  Global.booBerechnungsFreigabe = False
+  FMain.Show
+End
+
+
+Public Sub zeichne_Kreise(r1 As Float, r2 As Float)
+  Dim i As Integer
+  Draw.Begin(drwRohre)
+  
+  ' [GB2:FCOL] Draw.ForeColor = &HD9DADB&
+  Draw.Foreground = &HD9DADB&
+  For i = 1 To drwRohre.Width
+    Draw.Line(i, 0, i - 1, drwRohre.Height)
+  Next
+  Draw.LineWidth = 2
+  Draw.LineStyle = 1
+  ' [GB2:FCOL] Draw.ForeColor = &H000000&
+  Draw.Foreground = &H000000&
+  Draw.FillStyle = 1
+  Draw.FillColor = &H00DAD7CB&
+  Draw.Circle(60, 60, 3 * r1 + 5)
+  Draw.Circle(140, 60, 3 * r2 + 5)
+  Draw.Circle(220, 60, 3 * r2 + 5)
+  Draw.Circle(300, 60, 3 * r1 + 5)
+
+  Draw.FillColor = &H00C4071B&
+  Draw.Circle(60, 60, 3 * r1)
+  Draw.Circle(140, 60, 3 * r2)
+  Draw.FillColor = &H000073CF&
+  Draw.Circle(220, 60, 3 * r2)
+  Draw.Circle(300, 60, 3 * r1)
+  
+  Draw.LineWidth = 1
+  Draw.LineStyle = 4
+  Draw.Line(60, 60 - 3 * r1 - 7, 60, 60 + 3 * r1 + 7)
+  Draw.Line(60 - 3 * r1 - 7, 60, 60 + 3 * r1 + 7, 60)
+  Draw.Line(140, 60 - 3 * r2 - 7, 140, 60 + 3 * r2 + 7)
+  Draw.Line(140 - 3 * r2 - 7, 60, 140 + 3 * r2 + 7, 60)
+  Draw.Line(220, 60 - 3 * r2 - 7, 220, 60 + 3 * r2 + 7)
+  Draw.Line(220 - 3 * r2 - 7, 60, 220 + 3 * r2 + 7, 60)
+  Draw.Line(300, 60 - 3 * r1 - 7, 300, 60 + 3 * r1 + 7)
+  Draw.Line(300 - 3 * r1 - 7, 60, 300 + 3 * r1 + 7, 60)
+  Draw.End
+End
+
+
+'Public Sub sliAusleg_Change()
+'  txbAusleg.Text = CStr(sliAusleg.Value)
+'End
+
+'Public Sub txbAusleg_LostFocus()
+'  Dim fltcatch As Float
+'  fltcatch = sliAusleg.Value
+'  sliAusleg.Value = CFloat(txbAusleg.Text)
+'  Catch
+'    sliAusleg.Value = fltcatch
+'txbAusleg.Text = CStr(fltcatch)
+'End
+
+
+Public Sub sliDeltaT_Change()
+  txbDeltaT.Text = CStr(sliDeltaT.Value)
+End
+
+Public Sub txbDeltaT_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliDeltaT.Value
+  sliDeltaT.Value = CFloat(txbDeltaT.Text)
+  Catch
+    sliDeltaT.Value = fltcatch
+    txbDeltaT.Text = CStr(fltcatch)
+End
+
+
+Public Sub slidPmax_Change()
+  txbdPmax.Text = CStr(slidPmax.Value)
+End
+
+Public Sub txbdPmax_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = slidPmax.Value
+  slidPmax.Value = CFloat(txbdPmax.Text)
+  Catch
+    slidPmax.Value = fltcatch
+    txbdPmax.Text = CStr(fltcatch)
+End
+
+
+Public Sub sliAnschluss_Change()
+  txbAnschluss.Text = CStr(sliAnschluss.Value)
+End
+
+
+Public Sub txbAnschluss_LostFocus()
+  Dim fltcatch As Float
+  fltcatch = sliAnschluss.Value
+  sliAnschluss.Value = CFloat(txbAnschluss.Text)
+  Catch
+    sliAnschluss.Value = fltcatch
+    txbAnschluss.Text = CStr(fltcatch)
+End
+
+
+Public Sub txbTWWVL_LostFocus()
+  Global.fltTWWVL = CFloat(txbTWWVL.Text)
+End
+
+
+Public Sub txbTWWRL_LostFocus()
+  Global.fltTWWRL = CFloat(txbTWWRL.Text)
+End
+
+
+Public Sub btnStart_Click()
+  Global.fltMaxDP = CFloat(txbdPmax.Text)
+  Global.fltdeltaTHaus = CFloat(txbDeltaT.Text)
+  Global.fltAuslegungsfaktor = 100 ' CFloat(txbAusleg.Text)
+
+  If chkGLSPL.value = True Then
+    Global.fltTWWVL = CFloat(txbTWWVL.Text)
+    Global.fltTWWRL = CFloat(txbTWWRL.Text)
+    Global.fltTWWVLEIN = CFloat(txbTWWVLEIN.Text)
+    Global.fltTWWdT = CFloat(txbTWWdT.Text)
+  Else
+    Global.fltTWWdT = Global.fltdeltaTHaus
+    Global.booGLSPL = False
+  Endif
+  
+  Programmcode.lese_Lastprofile(Global.strtxbPfad & Global.conDateiNameLastprofil & ".csv")
+  Programmcode.berechne_KW()
+  Programmcode.lese_Daten_fuer_Simulation()
+  Programmcode.Dimensionierung()
+  FDimensionierung.Close
+  Global.booDimensionierung = True
+  Global.booBerechnung_show = True
+  Global.booSimulation_show = True
+  FMain.Show
+End
+
+
+
+Public Sub sliMLAVerhaeltnis_Change()
+Dim r1, r2 As Float
+  txlAnteilRohr2.Text = CStr(sliMLAVerhaeltnis.Value)
+  txlAnteilRohr1.Text = CStr(100 - sliMLAVerhaeltnis.Value)
+  r1 = 0.8 * Sqr((1000 * CFloat(txlAnteilRohr1.text) / 100) / Pi())
+  r2 = 0.8 * Sqr((1000 * CFloat(txlAnteilRohr2.text) / 100) / Pi())
+  zeichne_Kreise(r1, r2)
+  Global.fltMLAnteilLeiter2 = sliMLAVerhaeltnis.Value
+End
+
+
+
+Public Sub chkMehrleiternetz_Click()
+  If chkMehrleiternetz.Value = True Then
+    panMehrleiter.Visible = True
+    Global.booMehrleiter = True
+    Wait 0.1
+    sliMLAVerhaeltnis_Change()
+  Else
+    panMehrleiter.Visible = False
+    Global.booMehrleiter = False
+  Endif
+End
+
+
+Public Sub chkGLSPL_Click()
+If chkGLSPL.Value = True Then
+    panGLSPL.Visible = True
+    Global.booGLSPL = True
+    Global.fltTWWVL = CFloat(txbTWWVL.Text)
+    Global.fltTWWRL = CFloat(txbTWWRL.Text)
+    Global.fltTWWVLEIN = CFloat(txbTWWVLEIN.Text)
+    Global.fltTWWdT = CFloat(txbTWWdT.Text)
+  Else
+    Global.booGLSPL = False
+    panGLSPL.Visible = False
+    Global.fltTWWdT = CFloat(txbDeltaT.text)
+  Endif
+End
+
+
+Public Sub btnAnschlussgrad_Click()
+  Programmcode.Anschlussgrad_anlegen(CInt(txbAnschluss.Text))
+  Global.fltAnschlussgrad = CFloat(txbAnschluss.Text)
+End
+
+
+

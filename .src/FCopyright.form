@@ -1,0 +1,35 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(50.75,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { TextLabel4 TextLabel
+    MoveScaled(1,43,48,26)
+    Text = ("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with this program; if not, see http://www.gnu.org/licenses/. ")
+  }
+  { btnExit Button
+    MoveScaled(41,73,8,4.875)
+    Text = ("Exit")
+  }
+  { Label8 Label
+    MoveScaled(1,1,33,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Lizenzierung")
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(1,12,48,30)
+    Text = ("Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder jeder späteren Version.\n\nDie Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.\n\nSie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe http://www.gnu.org/licenses/. ")
+  }
+  { TextLabel2 TextLabel
+    MoveScaled(1,5,48,8)
+    Text = ("rfWärme ist ein Programm zur Berechnung und Simulation des thermischen und energetischen Verhaltens von Nahwärmenetzen. ")
+  }
+  { TextLabel3 TextLabel
+    MoveScaled(-11,70,60,4)
+    Text = ("Copyright © 2022 Asc.Prof. (FH) Dipl.-Ing. (FH) Robert Fröhler M.Eng.")
+    Alignment = Align.TopRight
+  }
+}

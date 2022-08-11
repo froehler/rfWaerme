@@ -1,0 +1,246 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,50,78.625)
+  Background = &HD9DADB&
+  Resizable = False
+  { txbTempVL TextBox
+    MoveScaled(26,5,16,4)
+    Text = ("90")
+  }
+  { sliTempVL Slider
+    MoveScaled(1,8,41,4)
+    MinValue = 20
+    MaxValue = 140
+    Value = 90
+  }
+  { panExtraBerechnung Panel
+    MoveScaled(1,11.75,48,22)
+    { txbminTempVLHaus TextBox
+      MoveScaled(25,0,16,4)
+      Text = ("70")
+    }
+    { sliminTempVLHaus Slider
+      MoveScaled(0,3,41,4)
+      MaxValue = 140
+      Value = 70
+    }
+    { txbminTempHaus TextBox
+      MoveScaled(25,7,16,4)
+      Text = ("55")
+    }
+    { sliminTempHaus Slider
+      MoveScaled(0,10,41,4)
+      MaxValue = 140
+      Value = 55
+    }
+    { txbminTempHausToleranz TextBox
+      MoveScaled(25,14,16,4)
+      Text = ("1")
+    }
+    { txbSchritte TextBox
+      MoveScaled(25,18,16,4)
+      Text = ("2")
+    }
+    { Label24 Label extraBerechnung
+      Name = "Label24"
+      MoveScaled(0,18,21,4)
+      Enabled = False
+      Text = ("Rechenschritte")
+    }
+    { Label25 Label extraBerechnung
+      Name = "Label25"
+      MoveScaled(0,0,21,4)
+      Enabled = False
+      Text = ("min. Temp. VL Haus ")
+    }
+    { Label26 Label extraBerechnung
+      Name = "Label26"
+      MoveScaled(43,0,5,4)
+      Enabled = False
+      Text = ("°C")
+    }
+    { Label27 Label extraBerechnung
+      Name = "Label27"
+      MoveScaled(0,14,21,4)
+      Enabled = False
+      Text = ("Toleranz Temp Haus  +-")
+    }
+    { Label28 Label extraBerechnung
+      Name = "Label28"
+      MoveScaled(43,14,5,4)
+      Enabled = False
+      Text = ("K")
+    }
+    { Label21 Label extraBerechnung
+      Name = "Label21"
+      MoveScaled(43,7,5,4)
+      Enabled = False
+      Text = ("°C")
+    }
+    { Label23 Label extraBerechnung
+      Name = "Label23"
+      MoveScaled(0,7,21,4)
+      Enabled = False
+      Text = ("min. Temp. RL Haus ")
+    }
+  }
+  { rdbDmKl1 RadioButton rdbDmKl
+    Name = "rdbDmKl1"
+    MoveScaled(26,33.875,6,4)
+    Text = ("1")
+    Value = True
+  }
+  { rdbDmKl2 RadioButton rdbDmKl
+    Name = "rdbDmKl2"
+    MoveScaled(33,33.875,6,4)
+    Text = ("2")
+  }
+  { rdbDmKl3 RadioButton rdbDmKl
+    Name = "rdbDmKl3"
+    MoveScaled(40,33.875,6,4)
+    Text = ("3")
+  }
+  { txbWTdP TextBox
+    MoveScaled(26,39,16,4)
+    Text = ("0.5")
+  }
+  { txbZfdP TextBox
+    MoveScaled(26,44,16,4)
+    Text = ("30")
+  }
+  { sliZfdP Slider
+    MoveScaled(1,47,41,4)
+    MaxValue = 200
+    Value = 30
+  }
+  { txbEtaPumpe TextBox
+    MoveScaled(26,51,16,4)
+    Text = ("60")
+  }
+  { sliEtaPumpe Slider
+    MoveScaled(1,54,41,4)
+    MinValue = 1
+    Value = 60
+  }
+  { sliStunde Slider
+    MoveScaled(1,69,41,4)
+    MinValue = 1
+    MaxValue = 8760
+    Value = 200
+  }
+  { btnStart Button
+    MoveScaled(1,73,8,4.875)
+    Text = ("Start")
+  }
+  { btnExit Button
+    MoveScaled(41,73,8,4.875)
+    Text = ("Exit")
+  }
+  { Label1 Label
+    MoveScaled(1,5,21,4)
+    Enabled = False
+    Text = ("Temperatur VL ")
+  }
+  { Label2 Label
+    MoveScaled(1,60,21,4)
+    Enabled = False
+    Text = ("Erdreichtemperatur")
+  }
+  { Label13 Label
+    MoveScaled(44,5,5,4)
+    Enabled = False
+    Text = ("°C")
+  }
+  { Label14 Label
+    MoveScaled(44,60,5,4)
+    Enabled = False
+    Text = ("°C")
+  }
+  { txbDmKl TextBox
+    MoveScaled(19,33.875,4,4)
+    Visible = False
+    Enabled = False
+    Text = ("1")
+  }
+  { Label22 Label
+    MoveScaled(1,33.875,21,4)
+    Enabled = False
+    Text = ("Dämmklasse")
+  }
+  { Label8 Label
+    MoveScaled(1,1,24,4)
+    Enabled = False
+    Font = Font["+2"]
+    Foreground = &H0073CF&
+    Text = ("Berechnung")
+  }
+  { Label4 Label
+    MoveScaled(1,44,23,4)
+    Enabled = False
+    Text = ("Zuschlag dP Formstücke")
+  }
+  { Label5 Label
+    MoveScaled(44,44,5,4)
+    Enabled = False
+    Text = ("%")
+  }
+  { Label9 Label
+    MoveScaled(1,39,21,4)
+    Enabled = False
+    Text = ("dP Wärmetauscher")
+  }
+  { Label10 Label
+    MoveScaled(44,39,5,4)
+    Enabled = False
+    Text = ("bar")
+  }
+  { Label3 Label
+    MoveScaled(1,51,21,4)
+    Enabled = False
+    Text = ("Wirkungsgrad Pumpe")
+  }
+  { Label15 Label
+    MoveScaled(44,51,5,4)
+    Enabled = False
+    Text = ("%")
+  }
+  { txlVerlauf TextLabel
+    MoveScaled(26,1,12,4)
+  }
+  { Label7 Label
+    MoveScaled(1,66,23,4)
+    Enabled = False
+    Text = ("Stunde im Jahr")
+  }
+  { chkMLNetz CheckBox
+    MoveScaled(13,74,24,3)
+    Visible = False
+    Enabled = False
+    Text = ("Mehrleiternetz")
+  }
+  { Label11 Label
+    MoveScaled(1,63,23,4)
+    Enabled = False
+    Text = ("Lufttemperatur über 24h")
+  }
+  { lblAussentemperatur Label
+    MoveScaled(28,63,6,4)
+    Enabled = False
+    Text = ("0")
+  }
+  { Label12 Label
+    MoveScaled(44,63,5,4)
+    Enabled = False
+    Text = ("°C")
+  }
+  { lblTempErdreich Label
+    MoveScaled(28,60,5.875,4)
+    Enabled = False
+    Text = ("0")
+  }
+  { lblStunde Label
+    MoveScaled(28,66,6,4)
+    Text = ("1")
+  }
+}

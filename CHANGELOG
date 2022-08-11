@@ -1,0 +1,47 @@
+* Thu May 03 2012 Robert Fröhler <info@robert-froehler.de> 1.22
+-
+
+* Thu May 03 2012 Robert Fröhler <info@robert-froehler.de> 1.21
+-
+
+* Thu May 03 2012 Robert Fröhler <info@robert-froehler.de> 1.20
+- Rundung der Koordinaten auf 2 Stellen (cm),
+- Optische Verbesserung in der Ausgabe der Simulationsergebnisse
+
+* Fri Mar 23 2012 Robert Fröhler <info@robert-froehler.de> 1.18
+- x
+
+* Thu Feb 23 2012 Robert Fröhler <info@robert-froehler.de> 1.18
+- Rohrrauhigkeit auf 0,05mm geändert und als Globale Variable gespeichert Global.k
+
+* Mon Feb 20 2012 Robert Fröhler <info@robert-froehler.de> 1.17
+- Auswertungsbug Schaltjahr
+
+* Sun Feb 12 2012 Robert Fröhler <info@robert-froehler.de> 1.16
+- Simulationsmenü vereinfacht und automatische Jahreszahlenermittlung eingebaut
+
+* Fri Feb 10 2012 Robert Fröhler <info@robert-froehler.de> 1.16
+- Auswertung Simulation als MIF/MID Layer
+
+* Wed Feb 08 2012 Robert Fröhler <info@robert-froehler.de> 1.15
+
+* Sun Feb 05 2012 Robert Fröhler <info@robert-froehler.de> 1.15
+- Klimabereinigung eingefügt
+
+* Sun Jan 29 2012 Robert Fröhler <info@robert-froehler.de> 1.14
+- update
+
+* Sun Jan 29 2012 robert <info@robert-froehler.de> 1.1
+- s
+
+* Sun Jan 29 2012 robert <info@robert-froehler.de> 1.1
+- test
+
+* Sun Jan 29 2012 robert <info@robert-froehler.de> 1.1
+- Test
+
+* Sun Jan 29 2012 robert <info@robert-froehler.de> 1.1
+
+* Thu Jan 26 2012 robert <robert@robert-vaio> 1.1
+- Ursprüngliche Version
+
