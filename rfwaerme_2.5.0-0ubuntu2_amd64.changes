@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Thu, 11 Aug 2022 12:00:00 +0000
+Source: rfwaerme
+Binary: rfwaerme
+Architecture: source all
+Version: 2.5.0-0ubuntu2
+Distribution: unstable
+Urgency: low
+Maintainer: Robert Fröhler <github@robert-froehler.de>
+Changed-By: Robert Fröhler <github@robert-froehler.de>
+Description:
+ rfwaerme   - Software zur Simulation von Nahwärmenetzen
+Changes:
+ rfwaerme (2.5.0-0ubuntu2) unstable; urgency=low
+ .
+   * New release version
+Checksums-Sha1:
+ 3d1039e8792872d7b4b0b1abb95490bd5e3ed242 1138 rfwaerme_2.5.0-0ubuntu2.dsc
+ 5b04f9348c7abf850b9dc840aa0b318632264334 2113 rfwaerme_2.5.0-0ubuntu2.diff.gz
+ e9c6819b2d4025677172f3f6f405487f66273837 1169052 rfwaerme_2.5.0-0ubuntu2_all.deb
+ 0b0b99641ff859d55a588a941427c35e3f6da633 14322 rfwaerme_2.5.0-0ubuntu2_amd64.buildinfo
+Checksums-Sha256:
+ 6a467c421d4fcedf7cf644bbcbf42b95b0da8a76a167f688a89411c4860ff5f3 1138 rfwaerme_2.5.0-0ubuntu2.dsc
+ 82edf2f77d91b1fdc80cf94e9cd60742278eae29a08b8e232f472e94b7960305 2113 rfwaerme_2.5.0-0ubuntu2.diff.gz
+ 3bf7ba01c703d77d25bd33bbdab9762e33b4126a3c2574bc8eac1fcc4d80bdb6 1169052 rfwaerme_2.5.0-0ubuntu2_all.deb
+ 1e5eaacc30388b89932a95dc78aac63961997e3da92f974e92feaec265063ef8 14322 rfwaerme_2.5.0-0ubuntu2_amd64.buildinfo
+Files:
+ 6d6d5957fdae28df0ae901f51bc7288b 1138 contrib/editors optional rfwaerme_2.5.0-0ubuntu2.dsc
+ 3d3bebdf56f3ed4ced19c688bbfa200d 2113 contrib/editors optional rfwaerme_2.5.0-0ubuntu2.diff.gz
+ 788804eacd5df787440f65bc88a77fc8 1169052 contrib/editors optional rfwaerme_2.5.0-0ubuntu2_all.deb
+ 602e70589ab49d2fc980aad00a3931a6 14322 contrib/editors optional rfwaerme_2.5.0-0ubuntu2_amd64.buildinfo
